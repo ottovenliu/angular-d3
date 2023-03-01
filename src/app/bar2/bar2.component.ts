@@ -37,9 +37,7 @@ export class Bar2Component implements AfterViewInit {
   private width = 750 - this.margin * 2;
   private height = 400 - this.margin * 2;
   private createSvg(): void {
-    if (d3.select(`figure#${this.chartName} svg`)) {
-      d3.select(`figure#${this.chartName} svg`).remove()
-    }
+    if (d3.select(`figure#${this.chartName} svg`)) { d3.select(`figure#${this.chartName} svg`).remove() }
     this.svg = d3
       .select(`figure#${this.chartName}`)
       .append('svg')
@@ -47,6 +45,8 @@ export class Bar2Component implements AfterViewInit {
       .attr('height', this.height + this.margin * 2)
       .append('g')
       .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
+
+
   }
   private drawBars(data: ChartData, YAxis: number = 10): void {
     // Create the X-axis band scale
@@ -84,6 +84,33 @@ export class Bar2Component implements AfterViewInit {
       .attr('width', x.bandwidth())
       .attr('height', (d: any) => this.height - y(d.value))
       .attr('fill', '#d04a35');
+
+
+    // 建立tooltips
+    const tooltips = d3.select(`figure#${this.chartName}`)
+      .append("div")
+      .style("opacity", 0)
+      .style('position', 'absolute')
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("color", "black")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+
+    this.svg.on('mouseover', () => {
+      tooltips.style("opacity", 1)
+    })
+      .on('mousemove', function (d: any) {
+        tooltips
+          .style("left", d.pageX + 15 + "px")
+          .style("top", d.pageY - 25 + "px")
+          .text(d.target.__data__.label + '：' + d.target.__data__.value);
+      })
+      .on('mouseout', function () { //設定滑鼠離開時tooltips隱藏
+        tooltips.style("opacity", 0)
+      });
   }
 
   ngOnInit(): void {
