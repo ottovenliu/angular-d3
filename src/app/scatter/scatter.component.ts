@@ -63,6 +63,7 @@ export class ScatterComponent implements OnInit {
       .text((d: any) => d.Framework)
       .attr("x", (d: any) => x(d.Released))
       .attr("y", (d: any) => y(d.Stars))
+      .style("fill", "#fff");
   }
   ngOnInit(): void {
     this.createSvg();

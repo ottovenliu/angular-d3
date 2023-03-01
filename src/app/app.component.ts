@@ -16,6 +16,13 @@ export class AppComponent {
       { label: 'Angular', value: 62342 },
       { label: 'Backbone', value: 27647 },
       { label: 'Ember', value: 21471 },
+      { label: 'jQuery', value: 67458 },
+      { label: 'Bootstrap', value: 12567 },
+      { label: 'Preact', value: 88372 },
+      { label: 'Svelte', value: 42879 },
+      { label: 'Next', value: 99653 },
+      { label: 'Gatsby', value: 74124 },
+      { label: 'Nuxt', value: 30926 },
     ],
   };
 }
