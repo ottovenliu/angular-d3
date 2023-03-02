@@ -99,17 +99,30 @@ export class Bar2Component implements AfterViewInit {
       .style("border-radius", "5px")
       .style("padding", "5px")
 
-    this.svg.on('mouseover', () => {
-      tooltips.style("opacity", 1)
+    this.svg.on('mouseover', (d: any) => {
+      if (d.srcElement.tagName === 'rect') {
+        tooltips.style("opacity", 1)
+        d3.select(d.srcElement).attr("fill", "red")
+      }
     })
-      .on('mousemove', function (d: any) {
-        tooltips
-          .style("left", d.pageX + 15 + "px")
-          .style("top", d.pageY - 25 + "px")
-          .text(d.target.__data__.label + '：' + d.target.__data__.value);
+      .on('mousemove', (d: any) => {
+        if (d.srcElement.tagName === 'rect') {
+          tooltips
+            .style("left", d.pageX + 15 + "px")
+            .style("top", d.pageY - 25 + "px")
+            .text(d.target.__data__.label + '：' + d.target.__data__.value);
+        }
       })
-      .on('mouseout', function () { //設定滑鼠離開時tooltips隱藏
+      .on('mouseout', (d: any) => { //設定滑鼠離開時tooltips隱藏
+        if (d.srcElement.tagName === 'rect') {
+          d3.select(d.srcElement).attr("fill", '#d04a35')
+        }
         tooltips.style("opacity", 0)
+      })
+      .on('click', (d: any) => {
+        console.log('d.srcElement.tagName:', d.srcElement.tagName)
+        console.log('d:', d)
+
       });
   }
 
