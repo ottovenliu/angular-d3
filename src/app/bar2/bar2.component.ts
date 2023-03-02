@@ -120,7 +120,8 @@ export class Bar2Component implements AfterViewInit {
         tooltips.style("opacity", 0)
       })
       .on('click', (d: any) => {
-        console.log('d.srcElement.tagName:', d.srcElement.tagName)
+        // window.open(d.target.__data__.Url);
+        console.log('d.target.__data__:', d.target.__data__)
         console.log('d:', d)
 
       });
