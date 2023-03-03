@@ -7,6 +7,7 @@ import { BarComponent } from './bar/bar.component';
 import { PieComponent } from './pie/pie.component';
 import { ScatterComponent } from './scatter/scatter.component';
 import { Bar2Component } from './bar2/bar2.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { Bar2Component } from './bar2/bar2.component';
     BarComponent,
     PieComponent,
     ScatterComponent,
-    Bar2Component
+    Bar2Component,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
