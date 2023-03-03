@@ -47,8 +47,6 @@ export class CalendarComponent implements OnInit {
 
   }
   private drawHeatMap(data: any, YAxis: number = 10): void {
-    const myVars = Array.from(new Set(data.map((d: any) => d.variable)))
-
     // Create the X-axis band scale
     const x = d3
       .scaleBand()
@@ -138,7 +136,7 @@ export class CalendarComponent implements OnInit {
         tooltips
           .style("left", d.pageX + 15 + "px")
           .style("top", d.pageY - 25 + "px")
-          .text(d.target.__data__.value);
+          .text('盤查次數:' + d.target.__data__.value);
       })
       .on('mouseout', (d: any) => { //設定滑鼠離開時tooltips隱藏
         tooltips.style("opacity", 0)
@@ -149,8 +147,7 @@ export class CalendarComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
   ngAfterViewInit(): void {
     this.rwdSvgWidth = document.querySelector('#' + this.chartName) ? document.querySelector('#' + this.chartName)!.clientWidth : 0
     this.rwdSvgHeight = this.rwdSvgWidth * 0.8;
