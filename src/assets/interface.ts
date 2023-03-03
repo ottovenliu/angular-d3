@@ -6,3 +6,8 @@ export interface ChartData {
   yrange: number,
   lineData: LineData[]
 }
+export interface HeatMapData {
+  group: string,
+  variable: string,
+  value: number
+}

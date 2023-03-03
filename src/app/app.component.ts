@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ChartData } from './bar2/interface';
 
 @Component({
   selector: 'app-root',

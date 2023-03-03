@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { HeatMapData } from 'src/assets/interface';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -84,15 +85,15 @@ export class CalendarComponent implements OnInit {
     // Add the squares
     this.svg
       .selectAll()
-      .data(data, (d: any) => { return d.group + ':' + d.variable; })
+      .data(data, (d: HeatMapData) => { return d.group + ':' + d.variable; })
       .join("rect")
-      .attr("x", (d: any) => { return x(d.group) })
-      .attr("y", (d: any) => { return y(d.variable) })
+      .attr("x", (d: HeatMapData) => { return x(d.group) })
+      .attr("y", (d: HeatMapData) => { return y(d.variable) })
       .attr("rx", 4)
       .attr("ry", 4)
       .attr("width", x.bandwidth())
       .attr("height", y.bandwidth())
-      .style("fill", (d: any) => { return myColor(d.value) })
+      .style("fill", (d: HeatMapData) => { return myColor(d.value) })
       .style("stroke-width", 4)
       .style("stroke", "none")
       .style("opacity", 0.8)
@@ -104,10 +105,10 @@ export class CalendarComponent implements OnInit {
       .attr("class", "label")
       .attr("transform", "translate(10,15)")
       .append("text")
-      .attr("x", (d: any) => x(d.group))
-      .attr("y", (d: any) => y(d.variable))
+      .attr("x", (d: HeatMapData) => x(d.group))
+      .attr("y", (d: HeatMapData) => y(d.variable))
       .attr("dy", ".35em")
-      .text((d: any) => d.value)
+      .text((d: HeatMapData) => d.value)
     if (window.innerWidth < 520) {
       this.svg
         .selectAll(".label")
@@ -153,7 +154,6 @@ export class CalendarComponent implements OnInit {
     this.rwdSvgHeight = this.rwdSvgWidth * 0.8;
     this.width = this.rwdSvgWidth - this.margin * 2
     this.height = this.rwdSvgHeight - this.margin * 2
-    console.log(this.data)
     this.createSvg();
     this.drawHeatMap(this.data);
 

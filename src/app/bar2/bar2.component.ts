@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/core';
-import { ChartData, LineData } from './interface';
+
 import * as d3 from 'd3';
+import { ChartData, LineData } from 'src/assets/interface';
 @Component({
   selector: 'app-bar2',
   templateUrl: './bar2.component.html',
