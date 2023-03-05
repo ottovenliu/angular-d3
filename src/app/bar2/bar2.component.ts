@@ -46,8 +46,6 @@ export class Bar2Component implements AfterViewInit {
       .attr('height', this.height + this.margin * 2)
       .append('g')
       .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
-
-
   }
   private drawBars(data: ChartData, YAxis: number = 10): void {
     // Create the X-axis band scale
