@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+# 開發日程日誌
+
+2023.03.06 - 初步完成 d3 套入與 RWD 化
+
+後續開發項目 -
+
+> 1.套用 PrimeNG 素材庫  
+> 2.建立 route  
+> 3.建立 layout 機制  
+> 4.建立 API service 機制  
+> 5.建立 Store 機制
