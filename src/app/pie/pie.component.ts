@@ -93,13 +93,13 @@ export class PieComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
   ngAfterViewInit(): void {
     this.rwdSvgWidth = document.querySelector('#' + this.chartName) ? document.querySelector('#' + this.chartName)!.clientWidth : 0
     this.rwdSvgHeight = this.rwdSvgWidth
     this.width = this.rwdSvgWidth - this.margin * 2
     this.height = this.rwdSvgHeight - this.margin * 2
+    this.radius = Math.min(this.width, this.height) / 2;
     this.createSvg();
     this.createColors();
     this.drawChart(this.data);

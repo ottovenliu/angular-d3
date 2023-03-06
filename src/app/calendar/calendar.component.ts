@@ -64,7 +64,12 @@ export class CalendarComponent implements OnInit {
       .attr('transform', 'translate(0,' + this.height + ')')
       .call(d3.axisBottom(x).tickSize(0))
       .select(".domain").remove()
-
+    if (window.innerWidth < 520) {
+      this.svg.selectAll('text')
+        .attr('transform', 'translate(-10,0)rotate(-45)')
+        .style('text-anchor', 'end')
+        .style("font-size", '2vw');
+    }
     // Create the Y-axis band scale
     const y = d3.scaleBand()
       .range([this.height, 0])
