@@ -2,6 +2,10 @@
   <h1>Angular + D3</h1>
 </header>
 <app-bar chartName="barChart" [data]="chartData_2D_1"></app-bar>
-<app-calendar chartName="calendarChart" [data]="calendarData"></app-calendar>
-<app-pie chartName="pieChart" [data]="pirData"></app-pie>
+<app-calendar
+  chartName="calendarChart"
+  [data]="calendarData"
+  [range]="calendarRange"
+></app-calendar>
+<app-pie chartName="pieChart" [data]="pieData"></app-pie>
 <app-scatter></app-scatter>

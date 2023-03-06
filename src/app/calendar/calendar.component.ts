@@ -14,6 +14,8 @@ export class CalendarComponent implements OnInit {
   chartName: string = 'bar';
   @Input()
   data = {};
+  @Input()
+  range = [0, 100];
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const target = event.target as Window
@@ -80,7 +82,7 @@ export class CalendarComponent implements OnInit {
     // Build color scale
     const myColor = d3.scaleLinear<string, number>()
       .range(["white", "#69b3a2"])
-      .domain([1, 100])
+      .domain(this.range)
 
     // Add the squares
     this.svg
