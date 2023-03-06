@@ -32,8 +32,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 後續開發項目 -
 
-> 1.套用 PrimeNG 素材庫  
-> 2.建立 route  
-> 3.建立 layout 機制  
-> 4.建立 API service 機制  
-> 5.建立 Store 機制
+> 1.建立 route 套用  
+> 2.chart Animation  
+> 3.follow https://d3-graph-gallery.com/index.html chart Types  
+> 4.建立 layout 機制  
+> 5.PrimeNG 素材庫  
+> ~~建立 API service 機制~~  
+> ~~建立 Store 機制~~
