@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 
 import { SharedModule } from './shared/shared.module';
 import { ChartsModule } from './charts/charts.module';
+import { HomeComponent } from './feature/web/home/home.component';
 @NgModule({
   declarations: [
     AppComponent
@@ -16,7 +17,6 @@ import { ChartsModule } from './charts/charts.module';
     AppRoutingModule,
     ChartsModule,
     SharedModule,
-    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
