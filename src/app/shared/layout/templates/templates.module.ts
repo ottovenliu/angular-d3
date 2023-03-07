@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainLayOutModule } from './main-lay-out/main-lay-out.module';
 import { HeaderModule } from '../header/header.module';
 import { FooterModule } from '../footer/footer.module';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -12,7 +12,8 @@ import { FooterModule } from '../footer/footer.module';
     CommonModule,
     MainLayOutModule,
     HeaderModule,
-    FooterModule
+    FooterModule,
+    SharedModule,
   ],
   exports: [
     MainLayOutModule

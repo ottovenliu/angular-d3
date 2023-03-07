@@ -1,4 +1,10 @@
 <header class="d-flex align-items-center">
-  <h1>Angular + D3</h1>
+  <h1
+    [routerLink]="['Home']"
+    routerLinkActive="router-link-active"
+    [attr.style]="'cursor:pointer'"
+  >
+    Angular + D3
+  </h1>
   <p-megaMenu [model]="items"></p-megaMenu>
 </header>

@@ -8,8 +8,7 @@ import { ScatterComponent } from './scatter.component';
 @NgModule({
   declarations: [ScatterComponent],
   imports: [
-    CommonModule,
-    SharedModule
+    CommonModule
   ],
   exports: [ScatterComponent],
   entryComponents: [],

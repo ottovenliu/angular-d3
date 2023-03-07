@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 
 
 import { SharedModule } from './shared/shared.module';
-import { ChartsModule } from './charts/charts.module';
 import { TemplatesModule } from './shared/layout/templates/templates.module';
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import { TemplatesModule } from './shared/layout/templates/templates.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ChartsModule,
     SharedModule,
     TemplatesModule,
   ],

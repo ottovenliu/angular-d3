@@ -48,6 +48,9 @@ import { CarouselModule } from 'primeng/carousel';
 import { BadgeModule } from 'primeng/badge';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 
+// 3. D3.js===================================================
+import { ChartsModule } from './charts/charts.module';
+
 
 @NgModule({
   declarations: [],
@@ -58,6 +61,9 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+
+    // D3.js
+    ChartsModule,
 
     // PrimeNG
     TreeTableModule,
@@ -107,6 +113,9 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+
+    // D3.js
+    ChartsModule,
 
     // PrimeNG
     TreeTableModule,

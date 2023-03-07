@@ -8,8 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @NgModule({
   declarations: [PieComponent],
   imports: [
-    CommonModule,
-    SharedModule
+    CommonModule
   ],
   exports: [PieComponent]
 })

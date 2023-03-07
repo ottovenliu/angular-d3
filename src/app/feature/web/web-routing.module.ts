@@ -8,7 +8,15 @@ const routes: Routes = [
   },
   {
     path: 'Home',
-    loadChildren: () => import('./home/home.module').then(m => m.LoginModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+  },
+  {
+    path: 'BarCharts',
+    loadChildren: () => import('./bar-charts/bar-charts.module').then(m => m.BarChartsModule)
+  },
+  {
+    path: 'PieCharts',
+    loadChildren: () => import('./pie-charts/pie-charts.module').then(m => m.PieChartsModule)
   },
 ];
 

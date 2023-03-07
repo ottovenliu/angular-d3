@@ -17,4 +17,4 @@ import { HomeComponent } from './home.component';
     ReactiveFormsModule
   ]
 })
-export class LoginModule { }
+export class HomeModule { }

@@ -1,4 +1,3 @@
-import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScatterModule } from './scatter/scatter.module';
@@ -12,7 +11,6 @@ import { BarModule } from './bar/bar.module';
   declarations: [],
   imports: [
     CommonModule,
-    SharedModule,
     ScatterModule,
     PieModule,
     HeatMapModule,

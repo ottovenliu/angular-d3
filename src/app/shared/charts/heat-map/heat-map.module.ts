@@ -1,4 +1,3 @@
-import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeatMapComponent } from './heat-map.component';
@@ -8,8 +7,7 @@ import { HeatMapComponent } from './heat-map.component';
 @NgModule({
   declarations: [HeatMapComponent],
   imports: [
-    CommonModule,
-    SharedModule
+    CommonModule
   ],
   exports: [HeatMapComponent],
   entryComponents: [],

@@ -7,71 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-d3';
-  chartData_2D_1 = {
-    yrange: 200000,
-    lineData: [
-      {
-        label: 'Vue',
-        value: 166443,
-        Url: 'https://vuejs.org/'
-      },
-      {
-        label: 'React',
-        value: 150793,
-        Url: 'https://reactjs.org/'
-      },
-      {
-        label: 'Angular',
-        value: 62342,
-        Url: 'https://angular.io/'
-      },
-      {
-        label: 'Backbone',
-        value: 27647,
-        Url: 'https://backbonejs.org/'
-      },
-      {
-        label: 'Ember',
-        value: 21471,
-        Url: 'https://emberjs.com/'
-      },
-      {
-        label: 'jQuery',
-        value: 67458,
-        Url: 'https://jquery.com/'
-      },
-      {
-        label: 'Bootstrap',
-        value: 12567,
-        Url: 'https://getbootstrap.com/'
-      },
-      {
-        label: 'Preact',
-        value: 88372,
-        Url: 'https://preactjs.com/'
-      },
-      {
-        label: 'Svelte',
-        value: 42879,
-        Url: 'https://svelte.dev/'
-      },
-      {
-        label: 'Next',
-        value: 99653,
-        Url: 'https://nextjs.org/'
-      },
-      {
-        label: 'Gatsby',
-        value: 74124,
-        Url: 'https://www.gatsbyjs.com/'
-      },
-      {
-        label: 'Nuxt',
-        value: 30926,
-        Url: 'https://nuxtjs.org/'
-      }
-    ]
-  };
   calendarRange = [0, 10]
   calendarData = [
     { 'group': 'Monday', 'variable': '10:00', 'value': Math.floor(Math.random() * 10) },
@@ -152,13 +87,6 @@ export class AppComponent {
     { 'group': 'Sunday', 'variable': '19:00', 'value': Math.floor(Math.random() * 10) },
 
   ];
-  pieData = [
-    { "Framework": "Vue", "Stars": "166443", "Released": "2014" },
-    { "Framework": "React", "Stars": "150793", "Released": "2013" },
-    { "Framework": "Angular", "Stars": "62342", "Released": "2016" },
-    { "Framework": "Backbone", "Stars": "27647", "Released": "2010" },
-    { "Framework": "Ember", "Stars": "21471", "Released": "2011" },
-  ]
   scatterData = [
     { "Framework": "Vue", "Stars": "166443", "Released": "2014" },
     { "Framework": "React", "Stars": "150793", "Released": "2013" },
