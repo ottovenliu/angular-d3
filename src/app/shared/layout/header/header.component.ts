@@ -39,6 +39,42 @@ export class HeaderComponent implements OnInit {
           ],
         ]
       },
+      {
+        label: 'Heat Maps', icon: 'pi pi-fw pi-microsoft',
+        items: [
+          [
+            {
+              label: 'Heat Maps',
+              items: [
+                { label: 'Calendar', routerLink: "HeatMaps/Calendar" }
+              ]
+            },
+
+          ],
+        ]
+      },
+      {
+        label: 'Scatter And Lines', icon: 'pi pi-fw pi-chart-line',
+        items: [
+          [
+            {
+              label: 'Scatter Charts',
+              items: [
+                { label: 'Scatter Chart', routerLink: "HeatMaps/Calendar" }
+              ]
+            },
+
+          ],
+          [
+            {
+              label: 'Line Charts',
+              items: [
+                { label: 'Line Chart', routerLink: "HeatMaps/Calendar" }
+              ]
+            },
+          ],
+        ]
+      },
     ]
   }
 

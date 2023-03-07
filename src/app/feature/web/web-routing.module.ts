@@ -18,6 +18,14 @@ const routes: Routes = [
     path: 'PieCharts',
     loadChildren: () => import('./pie-charts/pie-charts.module').then(m => m.PieChartsModule)
   },
+  {
+    path: 'HeatMaps',
+    loadChildren: () => import('./heat-maps/heat-maps.module').then(m => m.HeatMapsModule)
+  },
+  {
+    path: 'ScatterAndLines',
+    loadChildren: () => import('./heat-maps/heat-maps.module').then(m => m.HeatMapsModule)
+  },
 ];
 
 @NgModule({
