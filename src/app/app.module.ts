@@ -3,22 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PieComponent } from './pie/pie.component';
-import { ScatterComponent } from './scatter/scatter.component';
-import { BarComponent } from './bar/bar.component';
-import { CalendarComponent } from './calendar/calendar.component';
 
+
+import { SharedModule } from './shared/shared.module';
+import { ChartsModule } from './charts/charts.module';
 @NgModule({
   declarations: [
-    AppComponent,
-    PieComponent,
-    ScatterComponent,
-    BarComponent,
-    CalendarComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ChartsModule,
+    SharedModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

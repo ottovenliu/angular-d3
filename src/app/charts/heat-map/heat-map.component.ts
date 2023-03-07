@@ -2,11 +2,11 @@ import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/
 import * as d3 from 'd3';
 import { HeatMapData } from 'src/assets/interface';
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  selector: 'app-heat-map',
+  templateUrl: './heat-map.component.html',
+  styleUrls: ['./heat-map.component.scss']
 })
-export class CalendarComponent implements OnInit {
+export class HeatMapComponent implements OnInit {
   rwdSvgWidth: number = 0;
   rwdSvgHeight: number = this.rwdSvgWidth * 0.8;
   constructor() { }
