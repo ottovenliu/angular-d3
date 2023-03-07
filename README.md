@@ -29,13 +29,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # 開發日程日誌
 
 2023.03.06 - 初步完成 d3 套入與 RWD 化  
-2023.03.07 - primeNG@13 套入與架構重構
+2023.03.07 - primeNG@13 套入&架構重構&添加路由&layoutTemplates
 
 後續開發項目 -
 
-> 1.建立 route 套用  
-> 2.chart Animation  
-> 3.follow https://d3-graph-gallery.com/index.html chart Types  
-> 4.建立 layout 機制  
+> 1.chart Animation  
+> 2.follow https://d3-graph-gallery.com/index.html chart Types  
 > ~~建立 API service 機制~~  
 > ~~建立 Store 機制~~

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MainLayOutComponent } from './shared/layout/templates/main-lay-out/main-lay-out.component';
 
 const routes: Routes = [
   // {
@@ -23,6 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'AngularAndD3',
+    component: MainLayOutComponent,
     loadChildren: () =>
       import('./feature/web/web.module').then(
         (m) => m.WebModule
