@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
             {
               label: 'Scatter Charts',
               items: [
-                { label: 'Scatter Chart', routerLink: "HeatMaps/Calendar" }
+                { label: 'Scatter Chart', routerLink: "ScatterAndLines/Scatter" }
               ]
             },
 
@@ -69,7 +69,7 @@ export class HeaderComponent implements OnInit {
             {
               label: 'Line Charts',
               items: [
-                { label: 'Line Chart', routerLink: "HeatMaps/Calendar" }
+                { label: 'Line Chart', routerLink: "ScatterAndLines/Line" }
               ]
             },
           ],

@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'ScatterAndLines',
-    loadChildren: () => import('./heat-maps/heat-maps.module').then(m => m.HeatMapsModule)
+    loadChildren: () => import('./scatter-and-lines/scatter-and-lines.module').then(m => m.ScatterAndLinesModule)
   },
 ];
 
