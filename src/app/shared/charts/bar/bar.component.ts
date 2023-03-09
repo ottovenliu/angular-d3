@@ -39,6 +39,7 @@ export class BarComponent implements AfterViewInit {
   private height = 400 - this.margin * 2;
   private createSvg(): void {
     if (d3.select(`figure#${this.chartName} svg`)) { d3.select(`figure#${this.chartName} svg`).remove() }
+    if (d3.select(`figure#${this.chartName} .tooltip`)) { d3.select(`figure#${this.chartName} .tooltip`).remove() }
     this.svg = d3
       .select(`figure#${this.chartName}`)
       .append('svg')
@@ -61,6 +62,7 @@ export class BarComponent implements AfterViewInit {
       .attr('transform', 'translate(0,' + this.height + ')')
       .call(d3.axisBottom(x))
       .selectAll('text')
+      .attr("class", "label")
       .attr('transform', 'translate(-10,0)rotate(-45)')
       .style('text-anchor', 'end');
 
@@ -69,7 +71,11 @@ export class BarComponent implements AfterViewInit {
 
     // Draw the Y-axis on the DOM
 
-    this.svg.append('g').call(d3.axisLeft(y).ticks(YAxis));
+    this.svg
+    .append('g')
+    .call(d3.axisLeft(y).ticks(YAxis))
+    .selectAll('text')
+    .attr("class", "label");
 
 
     // Create and fill the bars
@@ -107,8 +113,8 @@ export class BarComponent implements AfterViewInit {
       .on('mousemove', (d: any) => {
         if (d.srcElement.tagName === 'rect') {
           tooltips
-            .style("left", d.pageX + 15 + "px")
-            .style("top", d.pageY - 25 + "px")
+            .style("left", d.layerX + 10 + "px")
+            .style("top", d.layerY + "px")
             .text(d.target.__data__.label + '：' + d.target.__data__.value);
         }
       })
