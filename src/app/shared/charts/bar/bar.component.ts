@@ -72,10 +72,10 @@ export class BarComponent implements AfterViewInit {
     // Draw the Y-axis on the DOM
 
     this.svg
-    .append('g')
-    .call(d3.axisLeft(y).ticks(YAxis))
-    .selectAll('text')
-    .attr("class", "label");
+      .append('g')
+      .call(d3.axisLeft(y).ticks(YAxis))
+      .selectAll('text')
+      .attr("class", "label");
 
 
     // Create and fill the bars

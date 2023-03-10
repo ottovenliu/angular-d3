@@ -39,58 +39,113 @@ export class MapComponent implements OnInit, AfterViewInit {
   private colors: any;
   private createSvg(): void {
     if (d3.select(`figure#${this.chartName} svg`)) { d3.select(`figure#${this.chartName} svg`).remove() }
+    if (d3.select(`figure#${this.chartName} .tooltip`)) { d3.select(`figure#${this.chartName} .tooltip`).remove() }
+
     this.svg = d3
       .select(`figure#${this.chartName}`)
       .append('svg')
-      .attr('width', this.width + this.margin * 2)
-      .attr('height', this.height + this.margin * 2)
-      .append('g')
-      .attr('transform', "translate(" + this.width / 2 + "," + this.height / 2 + ")");
+      .attr('width', this.width)
+      .attr('height', this.height)
   }
   private createColors(): void {
     this.colors = d3.scaleOrdinal()
-      .domain(this.data.map((d: any) => d.Stars.toString()))
-      .range(["#c7d3ec", "#a5b8db", "#879cc4", "#677795", "#5a6782"]);
+      .domain(["A", "B", "C"])
+      .range(["#402D54", "#D18975", "#8FD175"])
   }
   private drawChart(data: any): void {
-    // Compute the position of each group on the pie:
-    const pie = d3.pie<any>().value((d: any) => Number(d.Stars));
+    // Create data for circles:
+    const markers = [
+      { long: 9.083, lat: 42.149, group: "A", size: 34, Name: 'Corsica' }, // corsica
+      { long: 7.26, lat: 43.71, group: "A", size: 14, Name: 'nice' }, // nice
+      { long: 2.349, lat: 48.864, group: "B", size: 87, Name: 'Paris' }, // Paris
+      { long: -1.397, lat: 43.664, group: "B", size: 41, Name: 'Hossegor' }, // Hossegor
+      { long: 3.075, lat: 50.640, group: "C", size: 78, Name: 'Lille' }, // Lille
+      { long: -3.83, lat: 58, group: "C", size: 12, Name: 'Morlaix' } // Morlaix
+    ];
+    // Map and projection
+    const projection = d3.geoMercator()
+      .center([2, 47])                // GPS of location to zoom on
+      .scale(1020)                       // This is like the zoom
+      .translate([this.width / 2, this.height / 2])
+    d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").then((data: any) => {
 
-    // Build the pie chart
-    this.svg
-      .selectAll('pieces')
-      .data(pie(data))
-      .enter()
-      .append('path')
-      .attr('d', d3.arc()
-        .innerRadius(0)
-        .outerRadius(this.radius)
-      )
-      .attr('fill', (d: any, i: any) => (this.colors(i)))
-      .attr("stroke", "#121926")
-      .style("stroke-width", "1px");
+      // Filter data
+      data.features = data.features.filter((d: any) => d.properties.name == "France")
 
-    // Add labels
-    const labelLocation = d3.arc()
-      .innerRadius(100)
-      .outerRadius(this.radius);
+      // Create a color scale
+      const color = d3.scaleOrdinal()
+        .domain(["A", "B", "C"])
+        .range(["#402D54", "#D18975", "#8FD175"])
 
-    this.svg
-      .selectAll('pieces')
-      .data(pie(data))
-      .enter()
-      .append('text')
-      .text((d: any) => d.data.Framework)
-      .attr("class", "label")
-      .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
-      .style("text-anchor", "middle")
-      .style("font-size", 15);
-    if (window.innerWidth < 520) {
+      // Add a scale for bubble size
+      const size = d3.scaleLinear()
+        .domain([1, 100])  // What's in the data
+        .range([4, 50])  // Size in pixel
+
+      // Draw the map
+      this.svg.append("g")
+        .selectAll("path")
+        .data(data.features)
+        .join("path")
+        .attr("fill", "#b8b8b8")
+        .attr("d", d3.geoPath()
+          .projection(projection)
+        )
+        .style("stroke", "black")
+        .style("opacity", .3)
+
+      // Add circles:
       this.svg
-        .selectAll('.label')
-        .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
-        .style("font-size", '2vw');
-    }
+        .selectAll("myCircles")
+        .data(markers)
+        .join("circle")
+        .attr("cx", (d: any) => projection([d.long, d.lat])![0])
+        .attr("cy", (d: any) => projection([d.long, d.lat])![1])
+        .attr("r", (d: any) => size(d.size))
+        .style("fill", (d: any) => color(d.group))
+        .attr("stroke", (d: any) => color(d.group))
+        .attr("stroke-width", 3)
+        .attr("fill-opacity", .4)
+      // 建立tooltips
+      const tooltips = d3.select(`figure#${this.chartName}`)
+        .append("div")
+        .style("opacity", 0)
+        .style('position', 'absolute')
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("color", "black")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+
+      this.svg.on('mouseover', (d: any) => {
+        if (d.srcElement.tagName === 'circle') {
+          tooltips.style("opacity", 1)
+          d3.select(d.srcElement).attr("fill", "red")
+        }
+      })
+        .on('mousemove', (d: any) => {
+          if (d.srcElement.tagName === 'circle') {
+            tooltips
+              .style("left", d.layerX + 10 + "px")
+              .style("top", d.layerY + "px")
+              .html('Group:' + d.target.__data__.group + '<br>' + 'City:' + d.target.__data__.Name);
+          }
+        })
+        .on('mouseout', (d: any) => { //設定滑鼠離開時tooltips隱藏
+          if (d.srcElement.tagName === 'circle') {
+            d3.select(d.srcElement).attr("fill", '#d04a35')
+          }
+          tooltips.style("opacity", 0)
+        })
+        .on('click', (d: any) => {
+          // window.open(d.target.__data__.Url);
+          console.log('d.target.__data__:', d.target.__data__)
+          console.log('d:', d)
+
+        });
+    })
   }
 
   ngOnInit(): void { }
