@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
             {
               label: 'Maps',
               items: [
-                { label: 'Map', routerLink: "Maps/Map" }
+                { label: 'BubbleMap', routerLink: "Maps/BubbleMap" }
               ]
             },
 

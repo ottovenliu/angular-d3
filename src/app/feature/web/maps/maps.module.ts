@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MapsRoutingModule } from './maps-routing.module';
-import { MapComponent } from './map/map.component';
+import { BubbleMapComponent } from './bubble-map/bubble-map.component';
 
 @NgModule({
   declarations: [
-    MapComponent,
+    BubbleMapComponent,
   ],
   imports: [
     CommonModule,

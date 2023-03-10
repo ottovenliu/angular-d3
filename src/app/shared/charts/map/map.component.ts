@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnInit, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
 @Component({
   selector: 'app-map',
@@ -13,6 +13,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   chartName: string = 'bar';
   @Input()
   data: any = [];
+  @Input()
+  selectedGroups: string[] = [];
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const target = event.target as Window
@@ -37,6 +39,31 @@ export class MapComponent implements OnInit, AfterViewInit {
   // The radius of the pie chart is half the smallest side
   private radius = Math.min(this.width, this.height) / 2;
   private colors: any;
+  private previousSelectedGroups: string[] = []
+  ngOnInit(): void { }
+  ngAfterViewInit(): void {
+    this.rwdSvgWidth = document.querySelector('#' + this.chartName) ? document.querySelector('#' + this.chartName)!.clientWidth : 0
+    this.rwdSvgHeight = this.rwdSvgWidth
+    this.width = this.rwdSvgWidth - this.margin * 2
+    this.height = this.rwdSvgHeight - this.margin * 2
+    this.radius = Math.min(this.width, this.height) / 2;
+    this.createSvg();
+    this.createColors();
+    this.drawChart(this.data);
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (
+      changes['selectedGroups'] &&
+      changes['selectedGroups'].currentValue &&
+      !changes['selectedGroups'].firstChange
+    ) {
+      this.update(this.selectedGroups)
+    }
+  }
+
+
+
   private createSvg(): void {
     if (d3.select(`figure#${this.chartName} svg`)) { d3.select(`figure#${this.chartName} svg`).remove() }
     if (d3.select(`figure#${this.chartName} .tooltip`)) { d3.select(`figure#${this.chartName} .tooltip`).remove() }
@@ -149,16 +176,21 @@ export class MapComponent implements OnInit, AfterViewInit {
         });
     })
   }
+  private update(selectedGroups: string[]): void {
+    console.log('changes[selectedGroups]', selectedGroups)
+    // For each check box:
+    selectedGroups.forEach((selectedItem: string) => {
 
-  ngOnInit(): void { }
-  ngAfterViewInit(): void {
-    this.rwdSvgWidth = document.querySelector('#' + this.chartName) ? document.querySelector('#' + this.chartName)!.clientWidth : 0
-    this.rwdSvgHeight = this.rwdSvgWidth
-    this.width = this.rwdSvgWidth - this.margin * 2
-    this.height = this.rwdSvgHeight - this.margin * 2
-    this.radius = Math.min(this.width, this.height) / 2;
-    this.createSvg();
-    this.createColors();
-    this.drawChart(this.data);
+    })
+
+    // // If the box is check, I show the group
+    // if (cb.property("checked")) {
+    //   svg.selectAll("." + grp).transition().duration(1000).style("opacity", 1).attr("r", function (d) { return size(d.size) })
+
+    //   // Otherwise I hide it
+    // } else {
+    //   svg.selectAll("." + grp).transition().duration(1000).style("opacity", 0).attr("r", 0)
+    // }
+
   }
 }

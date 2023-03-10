@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MapComponent } from './map/map.component';
+import { BubbleMapComponent } from './bubble-map/bubble-map.component';
 
 const routes: Routes = [{
   path: '',
-  component: MapComponent
+  component: BubbleMapComponent
 },
 {
-  path: 'Map',
-  component: MapComponent
+  path: 'BubbleMap',
+  component: BubbleMapComponent
 }];
 
 @NgModule({
