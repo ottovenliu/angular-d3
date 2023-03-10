@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'ScatterAndLines',
     loadChildren: () => import('./scatter-and-lines/scatter-and-lines.module').then(m => m.ScatterAndLinesModule)
   },
+  {
+    path: 'Maps',
+    loadChildren: () => import('./maps/maps.module').then(m => m.MapsModule)
+  },
 ];
 
 @NgModule({

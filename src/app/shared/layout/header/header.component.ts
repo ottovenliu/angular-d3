@@ -75,6 +75,21 @@ export class HeaderComponent implements OnInit {
           ],
         ]
       },
+      {
+        label: 'Maps', icon: 'pi pi-fw pi-map',
+        items: [
+          [
+            {
+              label: 'Maps',
+              items: [
+                { label: 'Map', routerLink: "Maps/Map" }
+              ]
+            },
+
+          ],
+
+        ]
+      },
     ]
   }
 
