@@ -163,6 +163,17 @@ export class MapComponent implements OnInit, AfterViewInit {
         .attr('stroke', (d: any) => color(d.group))
         .attr('stroke-width', 3)
         .attr('fill-opacity', 0.4);
+
+      let checkLists: any[] = markers.filter(
+        (nonExistItem) => !this.previousGroups.includes(nonExistItem.group)
+      );
+      checkLists = Array.from(
+        new Set(checkLists.map((nonExistItem) => nonExistItem.group))
+      );
+      checkLists.forEach((selectedItem: string) => {
+        this.svg.selectAll('.' + selectedItem).style('opacity', 0);
+      });
+
       // 建立tooltips
       const tooltips = d3
         .select(`figure#${this.chartName}`)
@@ -222,20 +233,15 @@ export class MapComponent implements OnInit, AfterViewInit {
     const removeCheck = this.previousGroups.filter(
       (Item) => !selectedGroups.includes(Item)
     );
-    console.log('removeCheck', removeCheck);
-    console.log('addCheck', addCheck);
 
     if (removeCheck.length) {
       removeCheck.forEach((selectedItem: string) => {
-        console.log('removeCheckselectedItem', selectedItem);
-        console.log('svg', this.svg.selectAll('.' + selectedItem));
         this.svg.selectAll('.' + selectedItem).style('opacity', 0);
       });
     }
 
     if (addCheck.length) {
       addCheck.forEach((selectedItem: string) => {
-        console.log('addCheckselectedItem', selectedItem);
         this.svg
           .selectAll('.' + selectedItem)
           .transition()
