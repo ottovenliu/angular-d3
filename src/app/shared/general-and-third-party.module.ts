@@ -47,7 +47,7 @@ import { EditorModule } from 'primeng/editor';
 import { CarouselModule } from 'primeng/carousel';
 import { BadgeModule } from 'primeng/badge';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-
+import { TagModule } from 'primeng/tag';
 // 3. D3.js===================================================
 import { ChartsModule } from './charts/charts.module';
 
@@ -106,6 +106,7 @@ import { ChartsModule } from './charts/charts.module';
     AutoCompleteModule,
     CarouselModule,
     TabViewModule,
+    TagModule
   ],
   exports: [
     // Angular
@@ -158,6 +159,7 @@ import { ChartsModule } from './charts/charts.module';
     AutoCompleteModule,
     CarouselModule,
     TabViewModule,
+    TagModule
   ],
 })
 export class GeneralAndThirdPartyModule { }
