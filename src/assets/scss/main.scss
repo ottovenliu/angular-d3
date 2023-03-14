@@ -11,14 +11,12 @@ footer {
   padding-left: calc(50vw - 50%);
   padding-right: calc(50vw - 50%);
 }
-h2,
-h3,
-h4,
-h5,
-h6,
-.label,
-label,
-p,
-strong {
-  color: var(--primary-800);
+.text-primary-800 {
+  color: var(--primary-800) !important;
+}
+.label {
+  color: var(--primary-800) !important;
+}
+.domain {
+  color: var(--primary-800) !important;
 }

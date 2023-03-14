@@ -107,6 +107,7 @@ export class BarComponent implements AfterViewInit {
     this.svg.on('mouseover', (d: any) => {
       if (d.srcElement.tagName === 'rect') {
         tooltips.style("opacity", 1)
+        tooltips.style('display', 'initial');
         d3.select(d.srcElement).attr("fill", "red")
       }
     })
@@ -123,6 +124,7 @@ export class BarComponent implements AfterViewInit {
           d3.select(d.srcElement).attr("fill", '#d04a35')
         }
         tooltips.style("opacity", 0)
+        tooltips.style('display', 'none');
       })
       .on('click', (d: any) => {
         // window.open(d.target.__data__.Url);

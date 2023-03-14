@@ -1,27 +1,27 @@
 <div class="card">
-  <div class="card-header"><h2>Bubble Map</h2></div>
+  <div class="card-header"><h2 class="text-primary-800">Bubble Map</h2></div>
   <div class="card-body">
     <div class="row">
       <div class="col-md-12 col-lg-6">
         <div class="d-flex">
           <input
             type="checkbox"
-            class="checkbox"
+            class="checkbox me-1"
             (click)="updateList('A')"
             checked
-          /><label class="mr-1">group A</label>
+          /><label class="me-1 text-primary-800">group A</label>
           <input
             type="checkbox"
-            class="checkbox"
+            class="checkbox me-1"
             (click)="updateList('B')"
             checked
-          /><label>group B</label>
+          /><label class="me-1 text-primary-800">group B</label>
           <input
             type="checkbox"
-            class="checkbox"
+            class="checkbox me-1"
             (click)="updateList('C')"
             checked
-          /><label>group C</label>
+          /><label class="me-1 text-primary-800">group C</label>
         </div>
         <app-map
           chartName="Map"
@@ -29,7 +29,19 @@
           [selectedGroups]="selectedGroups"
         ></app-map>
       </div>
-      <div class="col-6"></div>
+      <div class="col-md-12 col-lg-6">
+        <strong class="text-primary-800"
+          >Tag:
+          <p-tag value="MouseOver" styleClass="me-1"></p-tag>
+          <p-tag value="Filter" styleClass="me-1"></p-tag>
+          <p-tag value="RWD" styleClass="me-1"></p-tag>
+          <p-tag value="Click" styleClass="me-1"></p-tag>
+          <p-tag value="LazyLoad" styleClass="me-1"></p-tag>
+        </strong>
+        <p class="text-primary-800">
+          基礎型地圖模組，具有滑鼠滑動(MouseOver)時即時顯示地圖圓圈(Bouble)名稱與數值的功能，具有點擊選取想顯示的群組並在地圖上顯示所屬範圍，也可透過點擊地圖群組泡泡顯示該資料瀏覽，可透過Console顯示點擊事件反饋。
+        </p>
+      </div>
     </div>
   </div>
 </div>

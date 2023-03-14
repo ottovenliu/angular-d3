@@ -29,9 +29,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # 開發日程日誌
 
 2023.03.06 - 初步完成 d3 套入與 RWD 化  
-2023.03.07 - primeNG@13 套入&架構重構&添加路由&layoutTemplates
-2023.03.08 - 圖表切分路徑切分&初始化結束
-2023.03.10 - 地圖元件開發
+2023.03.07 - primeNG@13 套入&架構重構&添加路由&layoutTemplates  
+2023.03.08 - 圖表切分路徑切分&初始化結束  
+2023.03.10 - 地圖元件開發  
 2023.03.14 - fontAwesomeIcon@6 引用
 
 後續開發項目 -
