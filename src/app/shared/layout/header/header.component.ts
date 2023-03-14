@@ -90,6 +90,21 @@ export class HeaderComponent implements OnInit {
 
         ]
       },
+      {
+        label: 'Nets', icon: 'pi pi-fw fas fa-circle-nodes',
+        items: [
+          [
+            {
+              label: 'Nets',
+              items: [
+                { label: 'Sankey', routerLink: "Nets/Sankey" }
+              ]
+            },
+
+          ],
+
+        ]
+      },
     ]
   }
 
