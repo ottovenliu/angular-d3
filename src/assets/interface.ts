@@ -11,3 +11,7 @@ export interface HeatMapData {
   variable: string,
   value: number
 }
+export interface SankeyData {
+  nodes: { node: number, name: string }[],
+  links: { source: number, target: number, value: number, }[]
+}

@@ -6,69 +6,65 @@ import { Component, OnInit } from '@angular/core';
 export class SankeyComponent implements OnInit {
   constructor() { }
   chartData_2D_1 = {
-    yrange: 200000,
-    lineData: [
+    "nodes": [
       {
-        label: 'Vue',
-        value: 166443,
-        Url: 'https://vuejs.org/',
+        "node": 0,
+        "name": "node0"
       },
       {
-        label: 'React',
-        value: 150793,
-        Url: 'https://reactjs.org/',
+        "node": 1,
+        "name": "node1"
       },
       {
-        label: 'Angular',
-        value: 62342,
-        Url: 'https://angular.io/',
+        "node": 2,
+        "name": "node2"
       },
       {
-        label: 'Backbone',
-        value: 27647,
-        Url: 'https://backbonejs.org/',
+        "node": 3,
+        "name": "node3"
       },
       {
-        label: 'Ember',
-        value: 21471,
-        Url: 'https://emberjs.com/',
-      },
-      {
-        label: 'jQuery',
-        value: 67458,
-        Url: 'https://jquery.com/',
-      },
-      {
-        label: 'Bootstrap',
-        value: 12567,
-        Url: 'https://getbootstrap.com/',
-      },
-      {
-        label: 'Preact',
-        value: 88372,
-        Url: 'https://preactjs.com/',
-      },
-      {
-        label: 'Svelte',
-        value: 42879,
-        Url: 'https://svelte.dev/',
-      },
-      {
-        label: 'Next',
-        value: 99653,
-        Url: 'https://nextjs.org/',
-      },
-      {
-        label: 'Gatsby',
-        value: 74124,
-        Url: 'https://www.gatsbyjs.com/',
-      },
-      {
-        label: 'Nuxt',
-        value: 30926,
-        Url: 'https://nuxtjs.org/',
-      },
+        "node": 4,
+        "name": "node4"
+      }
     ],
+    "links": [
+      {
+        "source": 0,
+        "target": 2,
+        "value": 2
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "value": 2
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "value": 2
+      },
+      {
+        "source": 0,
+        "target": 4,
+        "value": 2
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "value": 2
+      },
+      {
+        "source": 2,
+        "target": 4,
+        "value": 2
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "value": 4
+      }
+    ]
   };
   ngOnInit(): void { }
 }

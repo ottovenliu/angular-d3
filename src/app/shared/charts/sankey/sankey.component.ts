@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { ChartData, LineData } from 'src/assets/interface';
+import * as d3Sankey from 'd3-sankey';
+
+import { ChartData, LineData, SankeyData } from 'src/assets/interface';
 @Component({
   selector: 'app-sankey',
   templateUrl: './sankey.component.html',
@@ -15,11 +17,13 @@ export class SankeyComponent implements OnInit, AfterViewInit {
   private margin = 50;
   private width = 750 - this.margin * 2;
   private height = 400 - this.margin * 2;
+  private colors: any;
+  private sankey: any;
 
   @Input()
   chartName: string = 'bar';
   @Input()
-  data: ChartData = {} as ChartData;
+  data: SankeyData = {} as SankeyData;
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const target = event.target as Window
@@ -29,16 +33,14 @@ export class SankeyComponent implements OnInit, AfterViewInit {
     this.height = this.rwdSvgHeight - this.margin * 2
     if (target.innerWidth > 310 && target.innerWidth < 400) {
       this.createSvg();
-      this.drawBars(this.data, 5);
+      this.drawCarts(this.data);
     } else if (target.innerWidth >= 400) {
       this.createSvg();
-      this.drawBars(this.data);
+      this.drawCarts(this.data);
     } else { }
   }
 
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.rwdSvgWidth = document.querySelector('#' + this.chartName) ? document.querySelector('#' + this.chartName)!.clientWidth : 0
@@ -46,94 +48,8 @@ export class SankeyComponent implements OnInit, AfterViewInit {
     this.width = this.rwdSvgWidth - this.margin * 2
     this.height = this.rwdSvgHeight - this.margin * 2
     this.createSvg();
-    this.drawBars(this.data);
+    this.drawCarts(this.data);
   }
-  private drawBars(data: ChartData, YAxis: number = 10): void {
-    // Create the X-axis band scale
-    const x = d3
-      .scaleBand()
-      .range([0, this.width])
-      .domain(data.lineData.map((d: LineData) => d.label))
-      .padding(0.2);
-
-    // Draw the X-axis on the DOM
-    this.svg
-      .append('g')
-      .attr('transform', 'translate(0,' + this.height + ')')
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr("class", "label")
-      .attr('transform', 'translate(-10,0)rotate(-45)')
-      .style('text-anchor', 'end');
-
-    // Create the Y-axis band scale
-    const y = d3.scaleLinear().domain([0, data.yrange]).range([this.height, 0]);
-
-    // Draw the Y-axis on the DOM
-
-    this.svg
-      .append('g')
-      .call(d3.axisLeft(y).ticks(YAxis))
-      .selectAll('text')
-      .attr("class", "label");
-
-
-    // Create and fill the bars
-    this.svg
-      .selectAll('bars')
-      .data(data.lineData)
-      .enter()
-      .append('rect')
-      .attr('x', (d: LineData) => x(d.label))
-      .attr('y', (d: LineData) => y(d.value))
-      .attr('width', x.bandwidth())
-      .attr('height', (d: any) => this.height - y(d.value))
-      .attr('fill', '#d04a35');
-
-
-    // 建立tooltips
-    const tooltips = d3.select(`figure#${this.chartName}`)
-      .append("div")
-      .style("opacity", 0)
-      .style('position', 'absolute')
-      .attr("class", "tooltip")
-      .style("background-color", "white")
-      .style("color", "black")
-      .style("border", "solid")
-      .style("border-width", "2px")
-      .style("border-radius", "5px")
-      .style("padding", "5px")
-
-    this.svg.on('mouseover', (d: any) => {
-      if (d.srcElement.tagName === 'rect') {
-        tooltips.style("opacity", 1)
-        tooltips.style('display', 'initial');
-        d3.select(d.srcElement).attr("fill", "red")
-      }
-    })
-      .on('mousemove', (d: any) => {
-        if (d.srcElement.tagName === 'rect') {
-          tooltips
-            .style("left", d.layerX + 10 + "px")
-            .style("top", d.layerY + "px")
-            .text(d.target.__data__.label + '：' + d.target.__data__.value);
-        }
-      })
-      .on('mouseout', (d: any) => { //設定滑鼠離開時tooltips隱藏
-        if (d.srcElement.tagName === 'rect') {
-          d3.select(d.srcElement).attr("fill", '#d04a35')
-        }
-        tooltips.style("opacity", 0)
-        tooltips.style('display', 'none');
-      })
-      .on('click', (d: any) => {
-        // window.open(d.target.__data__.Url);
-        console.log('d.target.__data__:', d.target.__data__)
-        console.log('d:', d)
-
-      });
-  }
-
   private createSvg(): void {
     if (d3.select(`figure#${this.chartName} svg`)) { d3.select(`figure#${this.chartName} svg`).remove() }
     if (d3.select(`figure#${this.chartName} .tooltip`)) { d3.select(`figure#${this.chartName} .tooltip`).remove() }
@@ -144,6 +60,74 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .attr('height', this.height + this.margin * 2)
       .append('g')
       .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
-  }
 
+  }
+  private drawCarts(data: any): void {
+    let formatNumber = d3.format(",.0f"), // zero decimal places
+      format = function (d: any) { return formatNumber(d); },
+      color = d3.scaleOrdinal(d3.schemeCategory10);
+    // Color scale used
+
+
+
+    // Set the sankey diagram properties
+    let sankey = d3Sankey
+      .sankey()
+      .nodeWidth(36)
+      .nodePadding(40)
+      .size([this.width, this.height]);
+    console.log('data:', data)
+
+    let graph = sankey(data);
+
+
+    let link = this.svg
+      .append("g")
+      .selectAll(".link")
+      .data(graph.links)
+      .enter().append("path")
+      .attr("class", "link")
+      .attr("d", d3Sankey.sankeyLinkHorizontal())
+      .attr("stroke-width", (d: any) => { console.log(d); return d.width; });
+
+    link.append("title")
+      .text(function (d: any) {
+        return d.source.name + " → " +
+          d.target.name + "\n" + format(d.value);
+      });
+
+    // add in the nodes
+    let node = this.svg.append("g").selectAll(".node")
+      .data(graph.nodes)
+      .enter().append("g")
+      .attr("class", "node");
+
+    node.append("rect")
+      .attr("x", function (d: any) { return d.x0; })
+      .attr("y", function (d: any) { return d.y0; })
+      .attr("height", function (d: any) { return d.y1 - d.y0; })
+      .attr("width", sankey.nodeWidth())
+      .style("fill", function (d: any) {
+        return d.color = color(d.name.replace(/ .*/, ""));
+      })
+      .style("stroke", function (d: any) {
+        return d3.rgb(d.color).darker(2);
+      })
+      .append("title")
+      .text(function (d: any) {
+        return d.name + "\n" + format(d.value);
+      });
+
+    // add in the title for the nodes
+    node.append("text")
+      .attr("x", function (d: any) { return d.x0 - 6; })
+      .attr("y", function (d: any) { return (d.y1 + d.y0) / 2; })
+      .attr("dy", "0.35em")
+      .attr("text-anchor", "end")
+      .text(function (d: any) { return d.name; })
+      .filter((d: any) => { return d.x0 < (this.width) / 2; })
+      .attr("x", function (d: any) { return d.x1 + 6; })
+      .attr("text-anchor", "start");
+
+  }
 }
