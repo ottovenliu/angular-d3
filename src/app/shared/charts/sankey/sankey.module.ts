@@ -10,6 +10,7 @@ import { SankeyComponent } from './sankey.component';
   ],
   imports: [
     CommonModule
-  ]
+  ],
+  exports: [SankeyComponent],
 })
 export class SankeyModule { }
