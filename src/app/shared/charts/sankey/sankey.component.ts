@@ -59,14 +59,26 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .attr('width', this.width + this.margin * 2)
       .attr('height', this.height + this.margin * 2)
       .append('g')
-      .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
+      .attr('transform', 'translate(' + this.margin / 5 + ',' + this.margin / 5 + ')');
 
   }
   private drawCarts(data: any): void {
     let formatNumber = d3.format(",.0f"), // zero decimal places
       format = function (d: any) { return formatNumber(d); },
       color = d3.scaleOrdinal(d3.schemeCategory10);
-    // Color scale used
+    let dragmove = (d: any) => {
+      console.log('d:', d)
+      // var rectY = d3.select(this).select("rect").attr("y");
+      // var rectX = d3.select(this).select("rect").attr("X");
+      // d.y0 = d.y0 + d3.event.dy;
+      // d.x1 = d.x1 + d3.event.dx;
+      // d.x0 = d.x0 + d3.event.dx;
+      // var yTranslate = d.y0 - rectY;
+      // var xTranslate = d.x0 - rectX;
+      // d3.select(this).attr('transform', "translate(" + (xTranslate) + "," + (yTranslate) + ")");
+      // sankey.update(graph);
+      // link.attr('d', sankeyLinkHorizontal());
+    }
 
 
 
@@ -74,33 +86,46 @@ export class SankeyComponent implements OnInit, AfterViewInit {
     let sankey = d3Sankey
       .sankey()
       .nodeWidth(36)
-      .nodePadding(40)
+      .nodePadding(180)
       .size([this.width, this.height]);
-    console.log('data:', data)
-
+    // Constructs a new Sankey generator with the default settings.
     let graph = sankey(data);
 
-
-    let link = this.svg
+    // Add in the links
+    this.svg
       .append("g")
       .selectAll(".link")
       .data(graph.links)
-      .enter().append("path")
+      .enter()
+      .append("path")
       .attr("class", "link")
       .attr("d", d3Sankey.sankeyLinkHorizontal())
-      .attr("stroke-width", (d: any) => { console.log(d); return d.width; });
+      .style("stroke-width", function (d: any) { return d.width; })
+      .sort(function (a: any, b: any) { return b.dy - a.dy; });
 
-    link.append("title")
-      .text(function (d: any) {
-        return d.source.name + " → " +
-          d.target.name + "\n" + format(d.value);
-      });
+    // Styling links
+    this.svg.selectAll(".link")
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.2)
+      .on('mouseover', (d: any) => {
+        d3.select(d.srcElement).attr("stroke-opacity", 0.6)
+      })
+      .on('mouseout', (d: any) => {
+        d3.select(d.srcElement).attr("stroke-opacity", 0.2)
+      })
+
+
+
 
     // add in the nodes
-    let node = this.svg.append("g").selectAll(".node")
+    let node = this.svg
+      .append("g")
+      .selectAll(".node")
       .data(graph.nodes)
       .enter().append("g")
       .attr("class", "node");
+
 
     node.append("rect")
       .attr("x", function (d: any) { return d.x0; })
@@ -116,7 +141,7 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .append("title")
       .text(function (d: any) {
         return d.name + "\n" + format(d.value);
-      });
+      })
 
     // add in the title for the nodes
     node.append("text")
@@ -124,10 +149,21 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .attr("y", function (d: any) { return (d.y1 + d.y0) / 2; })
       .attr("dy", "0.35em")
       .attr("text-anchor", "end")
-      .text(function (d: any) { return d.name; })
+      .attr("stroke-opacity", 1)
+      .text((d: any) => d.name)
       .filter((d: any) => { return d.x0 < (this.width) / 2; })
-      .attr("x", function (d: any) { return d.x1 + 6; })
-      .attr("text-anchor", "start");
-
+      .attr("x", function (d: any) { return d.x1 + 6; });
+    //事件綁定
+    this.svg.selectAll(".node")
+      .call(d3.drag()
+        .subject(d => d)
+        .on('start', (d: any) => { console.log(d); })
+        .on('drag', dragmove))
+      .on('click', (d: any) => {
+        // window.open(d.target.__data__.Url);
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
   }
+
 }
