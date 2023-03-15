@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'Maps',
     loadChildren: () => import('./maps/maps.module').then(m => m.MapsModule)
   },
+  {
+    path: 'Nets',
+    loadChildren: () => import('./nets/nets.module').then(m => m.NetsModule)
+  },
 ];
 
 @NgModule({

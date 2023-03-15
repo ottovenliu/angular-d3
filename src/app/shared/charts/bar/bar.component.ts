@@ -9,9 +9,9 @@ import { ChartData, LineData } from 'src/assets/interface';
 })
 
 export class BarComponent implements AfterViewInit {
+  constructor() { }
   rwdSvgWidth: number = 0;
   rwdSvgHeight: number = this.rwdSvgWidth * 0.8;
-  constructor() { }
   @Input()
   chartName: string = 'bar';
   @Input()
