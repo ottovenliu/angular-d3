@@ -67,7 +67,8 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       format = function (d: any) { return formatNumber(d); },
       color = d3.scaleOrdinal(d3.schemeCategory10);
     let dragmove = (d: any) => {
-      console.log('d:', d)
+      console.log('dragmove:', d)
+      console.log('dragmove:', d.sourceEvent.srcElement)
       // var rectY = d3.select(this).select("rect").attr("y");
       // var rectX = d3.select(this).select("rect").attr("X");
       // d.y0 = d.y0 + d3.event.dy;
@@ -103,18 +104,32 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .style("stroke-width", function (d: any) { return d.width; })
       .sort(function (a: any, b: any) { return b.dy - a.dy; });
 
-    // Styling links
+    // Styling links And Hover Show Tooltips
     this.svg.selectAll(".link")
       .attr("fill", "none")
       .attr("stroke", "#000")
       .attr("stroke-opacity", 0.2)
       .on('mouseover', (d: any) => {
         d3.select(d.srcElement).attr("stroke-opacity", 0.6)
+        tooltips.style("opacity", 1)
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style("left", d.layerX + 10 + "px")
+          .style("top", d.layerY + "px")
+          .html('數值：' + d.target.__data__.value +
+            '</br>' +
+            '路徑：' + d.target.__data__.source.name + '→' + d.target.__data__.target.name);
       })
       .on('mouseout', (d: any) => {
         d3.select(d.srcElement).attr("stroke-opacity", 0.2)
+        tooltips.style("opacity", 0)
+        tooltips.style('display', 'none');
       })
-
+      .on('click', (d: any) => {
+        console.log(d.target.__data__)
+      })
 
 
 
@@ -138,6 +153,9 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .style("stroke", function (d: any) {
         return d3.rgb(d.color).darker(2);
       })
+      .on('click', (d: any) => {
+        console.log(d.target.__data__)
+      })
       .append("title")
       .text(function (d: any) {
         return d.name + "\n" + format(d.value);
@@ -152,18 +170,33 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .attr("stroke-opacity", 1)
       .text((d: any) => d.name)
       .filter((d: any) => { return d.x0 < (this.width) / 2; })
-      .attr("x", function (d: any) { return d.x1 + 6; });
-    //事件綁定
-    this.svg.selectAll(".node")
-      .call(d3.drag()
-        .subject(d => d)
-        .on('start', (d: any) => { console.log(d); })
-        .on('drag', dragmove))
+      .attr("x", function (d: any) { return d.x1 + 50; })
       .on('click', (d: any) => {
-        // window.open(d.target.__data__.Url);
-        console.log('d.target.__data__:', d.target.__data__);
-        console.log('d:', d);
-      });
+        console.log(d.target.__data__)
+      })
+    //事件綁定 d3.select(d.srcElement).attr('fill', 'red');
+    // this.svg.selectAll(".node")
+    //   .call(d3.drag()
+    //     .subject(d => d)
+    //     .on('start', (d: any) => { console.log(d); })
+    //     .on('drag', (d: any) => { dragmove(d); }))
+    // .on('click', (d: any) => {
+    //   // window.open(d.target.__data__.Url);
+    //   console.log('d.target.__data__:', d.target.__data__);
+    //   console.log('d:', d);
+    // });
+
+    const tooltips = d3.select(`figure#${this.chartName}`)
+      .append("div")
+      .style("opacity", 0)
+      .style('position', 'absolute')
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("color", "black")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
   }
 
 }
