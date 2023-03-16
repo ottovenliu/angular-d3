@@ -153,13 +153,26 @@ export class SankeyComponent implements OnInit, AfterViewInit {
       .style("stroke", function (d: any) {
         return d3.rgb(d.color).darker(2);
       })
+      .on('mouseover', (d: any) => {
+        d3.select(d.srcElement).attr("stroke-opacity", 0.6)
+        tooltips.style("opacity", 1)
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style("left", d.layerX + 10 + "px")
+          .style("top", d.layerY + "px")
+          .html('數值：' + d.target.__data__.value);
+      })
+      .on('mouseout', (d: any) => {
+        d3.select(d.srcElement).attr("stroke-opacity", 0.2)
+        tooltips.style("opacity", 0)
+        tooltips.style('display', 'none');
+      })
       .on('click', (d: any) => {
         console.log(d.target.__data__)
       })
-      .append("title")
-      .text(function (d: any) {
-        return d.name + "\n" + format(d.value);
-      })
+
 
     // add in the title for the nodes
     node.append("text")
