@@ -68,7 +68,35 @@ export class PieComponent implements OnInit, AfterViewInit {
       )
       .attr('fill', (d: any, i: any) => (this.colors(i)))
       .attr("stroke", "#121926")
-      .style("stroke-width", "1px");
+      .style("stroke-width", "1px")
+      .on('mouseover', (d: any) => {
+        tooltips.style("opacity", 1)
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style("left", d.layerX + 10 + "px")
+          .style("top", d.layerY + "px")
+          .html(d.target.__data__.data.Framework + '<br>'
+            + 'Stars: ' + d.target.__data__.data.Stars + '<br>'
+            + 'Released: ' + d.target.__data__.data.Released);
+
+      })
+      .on('mouseout', (d: any) => { //設定滑鼠離開時tooltips隱藏
+        tooltips.style("opacity", 0)
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        // window.open(d.target.__data__.Url);
+        console.log('d.target.__data__:', d.target.__data__)
+        console.log('d:', d)
+
+      });
+
+
+
+
+
 
     // Add labels
     const labelLocation = d3.arc()
@@ -85,12 +113,32 @@ export class PieComponent implements OnInit, AfterViewInit {
       .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
       .style("text-anchor", "middle")
       .style("font-size", 15);
+
+
+
+
+
+
     if (window.innerWidth < 520) {
       this.svg
         .selectAll('.label')
         .attr("transform", (d: any) => "translate(" + labelLocation.centroid(d) + ")")
         .style("font-size", '2vw');
     }
+
+
+    //創建tooltips
+    const tooltips = d3.select(`figure#${this.chartName}`)
+      .append("div")
+      .style("opacity", 0)
+      .style('position', 'absolute')
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("color", "black")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
   }
 
   ngOnInit(): void { }
