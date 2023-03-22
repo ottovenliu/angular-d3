@@ -71,16 +71,16 @@ export class HeatMapComponent implements OnInit {
       .style('font-size', 15)
       .attr('transform', 'translate(0,' + this.height + ')')
       .call(d3.axisBottom(x).tickSize(0))
-      .selectAll('text')
-      .attr('class', 'label');
+      .selectAll('text');
+    // .attr('class', 'label');
 
     if (window.innerWidth < 520) {
       this.svg
         .selectAll('text')
         .attr('transform', 'translate(-10,0)rotate(-45)')
         .style('text-anchor', 'end')
-        .style('font-size', '2vw')
-        .attr('class', 'label');
+        .style('font-size', '2vw');
+      // .attr('class', 'label');
     }
     // Create the Y-axis band scale
     const y = d3
@@ -95,13 +95,13 @@ export class HeatMapComponent implements OnInit {
       .append('g')
       // .style("font-size", 15)
       .call(d3.axisLeft(y).tickSize(0))
-      .selectAll('text')
-      .attr('class', 'label');
+      .selectAll('text');
+    // .attr('class', 'label');
 
     // Build color scale
     const myColor = d3
       .scaleLinear<string, number>()
-      .range(['#333', '#69b3a2'])
+      .range(['white', '#69b3a2'])
       .domain(this.range);
 
     // Add the squares
@@ -145,6 +145,7 @@ export class HeatMapComponent implements OnInit {
         .selectAll('.label')
         .style('font-size', '2vw')
         .attr('transform', 'translate(5,5)');
+      // .attr('class', 'label');
     }
     this.svg.selectAll('.domain').remove();
     // 建立tooltips
