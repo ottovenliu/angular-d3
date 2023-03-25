@@ -72,6 +72,20 @@ export class ScatterComponent implements OnInit, AfterViewInit {
     // Draw the Y-axis on the DOM
     this.svg.append('g').call(d3.axisLeft(y).ticks(YAxis));
 
+    // 建立tooltips
+    const tooltips = d3
+      .select(`figure#${this.chartName}`)
+      .append('div')
+      .style('opacity', 0)
+      .style('position', 'absolute')
+      .attr('class', 'tooltip')
+      .style('background-color', 'white')
+      .style('color', 'black')
+      .style('border', 'solid')
+      .style('border-width', '2px')
+      .style('border-radius', '5px')
+      .style('padding', '5px');
+
     // Add dots
     const dots = this.svg.append('g');
     dots
@@ -84,10 +98,39 @@ export class ScatterComponent implements OnInit, AfterViewInit {
       .attr('r', 7)
       .attr('class', 'point')
       .style('opacity', 0.5)
-      .style('fill', '#69b3a2');
+      .style('fill', '#69b3a2')
+      .on('mouseover', (d: any) => {
+        tooltips.style('opacity', 1);
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style('left', d.layerX + 10 + 'px')
+          .style('top', d.layerY + 'px')
+          .html(
+            d.target.__data__.Framework +
+              '<br>' +
+              'Stars: ' +
+              d.target.__data__.Stars +
+              '<br>' +
+              'Released: ' +
+              d.target.__data__.Released
+          );
+      })
+      .on('mouseout', (d: any) => {
+        //設定滑鼠離開時tooltips隱藏
+        tooltips.style('opacity', 0);
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        // window.open(d.target.__data__.Url);
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
     if (window.innerWidth < 520) {
       dots.selectAll('.point').attr('r', 3);
     }
+
     // Add labels
     dots
       .selectAll('text')
@@ -97,8 +140,35 @@ export class ScatterComponent implements OnInit, AfterViewInit {
       .attr('class', 'label')
       .text((d: any) => d.Framework)
       .attr('x', (d: any) => x(d.Released))
-      .attr('y', (d: any) => y(d.Stars));
-
+      .attr('y', (d: any) => y(d.Stars))
+      .on('mouseover', (d: any) => {
+        tooltips.style('opacity', 1);
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style('left', d.layerX + 10 + 'px')
+          .style('top', d.layerY + 'px')
+          .html(
+            d.target.__data__.Framework +
+              '<br>' +
+              'Stars: ' +
+              d.target.__data__.Stars +
+              '<br>' +
+              'Released: ' +
+              d.target.__data__.Released
+          );
+      })
+      .on('mouseout', (d: any) => {
+        //設定滑鼠離開時tooltips隱藏
+        tooltips.style('opacity', 0);
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        // window.open(d.target.__data__.Url);
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
     if (window.innerWidth < 520) {
       this.svg.selectAll('.label').style('font-size', '2vw');
     }
