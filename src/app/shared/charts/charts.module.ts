@@ -6,13 +6,10 @@ import { HeatMapModule } from './heat-map/heat-map.module';
 import { BarModule } from './bar/bar.module';
 import { MapModule } from './map/map.module';
 import { SankeyModule } from './sankey/sankey.module';
-
-
+import { BoxPlotModule } from './boxplot/boxplot.module';
 
 @NgModule({
-  declarations: [
-
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     ScatterModule,
@@ -20,7 +17,8 @@ import { SankeyModule } from './sankey/sankey.module';
     HeatMapModule,
     BarModule,
     MapModule,
-    SankeyModule
+    SankeyModule,
+    BoxPlotModule,
   ],
   exports: [
     ScatterModule,
@@ -28,7 +26,8 @@ import { SankeyModule } from './sankey/sankey.module';
     HeatMapModule,
     BarModule,
     MapModule,
-    SankeyModule
-  ]
+    SankeyModule,
+    BoxPlotModule,
+  ],
 })
-export class ChartsModule { }
+export class ChartsModule {}

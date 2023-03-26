@@ -1,18 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ScatterComponent } from './scatter/scatter.component';
+import { BoxPlotComponent } from './boxplot/boxplot.component';
+import { ScatterComponent } from './scatters/scatter.component';
 
-const routes: Routes = [{
-  path: '',
-  component: ScatterComponent
-},
-{
-  path: 'Scatter',
-  component: ScatterComponent
-}];
+const routes: Routes = [
+  {
+    path: '',
+    component: ScatterComponent,
+  },
+  {
+    path: 'Scatter',
+    component: ScatterComponent,
+  },
+  {
+    path: 'BoxPlot',
+    component: BoxPlotComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ScatterAndLinesRoutingModule { }
+export class ScatterAndLinesRoutingModule {}
