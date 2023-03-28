@@ -14,7 +14,7 @@ import * as d3 from 'd3';
 export class BoxPlotComponent implements OnInit, AfterViewInit {
   rwdSvgWidth: number = 0;
   rwdSvgHeight: number = this.rwdSvgWidth * 0.8;
-  constructor() {}
+  constructor() { }
   @Input()
   chartName: string = 'bar';
   @Input()
@@ -54,54 +54,156 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
       .attr('transform', 'translate(' + this.margin + ',' + this.margin + ')');
   }
   private drawPlot(data: any, YAxis: number = 10): void {
-    // Compute summary statistics used for the box:
-    let data_sorted = data.sort(d3.ascending);
-    let q1 = d3.quantile(data_sorted, 0.25) || 0;
-    let median = d3.quantile(data_sorted, 0.5) || 0;
-    let q3 = d3.quantile(data_sorted, 0.75) || 0;
-    let interQuantileRange = q3 - q1;
-    let min = q1 - 1.5 * interQuantileRange;
-    let max = q1 + 1.5 * interQuantileRange;
-    let center = 200;
-    let width = 100;
-    // Show the Y scale
-    var y = d3.scaleLinear().domain([0, 24]).range([this.height, 0]);
-    this.svg.call(d3.axisLeft(y));
+
+    // Add X axis
+    const x = d3
+      .scaleBand()
+      .domain(['Vue', 'React', 'Angular'])
+      .range([0, this.width])
+      .paddingInner(1)
+      .paddingOuter(.5);
+    // Draw the X-axis on the DOM
+    this.svg
+      .append('g')
+      .attr('transform', 'translate(0,' + this.height + ')')
+      .call(d3.axisBottom(x));
+    if (window.innerWidth < 520) {
+      this.svg
+        .selectAll('text')
+        .attr('transform', 'translate(-10,0)rotate(-45)')
+        .style('text-anchor', 'end');
+    }
+    const sumstat = this.data.map(
+      (dataItem: any) => {
+        let q1 = d3.quantile(dataItem.Stars.sort(d3.ascending), .25) || 0;
+        let median = d3.quantile(dataItem.Stars.sort(d3.ascending), .5) || 0;
+        let q3 = d3.quantile(dataItem.Stars.sort(d3.ascending), .75) || 0;
+        let interQuantileRange = q3 - q1
+        let min = Math.min(...dataItem.Stars)
+        let max = Math.max(...dataItem.Stars)
+        return {
+          key: dataItem.Framework,
+          value: { q1: q1, median: median, q3: q3, interQuantileRange: interQuantileRange, min: min, max: max }
+        }
+      }
+    )
+    sumstat
+    console.log('sumstat:', sumstat)
+    // Add Y axis
+    const y = d3.scaleLinear().domain([0, 50]).range([this.height, 0]);
+    // Draw the Y-axis on the DOM
+    this.svg.append('g').call(d3.axisLeft(y));
 
     // Show the main vertical line
     this.svg
-      .append('line')
-      .attr('x1', center)
-      .attr('x2', center)
-      .attr('y1', y(min))
-      .attr('y2', y(max))
-      .attr('stroke', 'black');
-
-    // Show the box
-    this.svg
-      .append('rect')
-      .attr('x', center - width / 2)
-      .attr('y', y(q3))
-      .attr('height', y(q1) - y(q3))
-      .attr('width', width)
-      .attr('stroke', 'black')
-      .style('fill', '#69b3a2');
-
-    // show median, min and max horizontal lines
-    this.svg
-      .selectAll('toto')
-      .data([min, median, max])
+      .selectAll("vertLines")
+      .data(sumstat)
       .enter()
-      .append('line')
-      .attr('x1', center - width / 2)
-      .attr('x2', center + width / 2)
-      .attr('y1', (d: any) => {
-        return y(d);
-      })
-      .attr('y2', (d: any) => {
-        return y(d);
-      })
-      .attr('stroke', 'black');
+      .append("line")
+      .attr("x1", function (d: any) { return (x(d.key)) })
+      .attr("x2", function (d: any) { return (x(d.key)) })
+      .attr("y1", function (d: any) { return (y(d.value.min)) })
+      .attr("y2", function (d: any) { return (y(d.value.max)) })
+      .attr("stroke", "black")
+      .style("width", 40)
+
+    // rectangle for the main box
+    let boxWidth = 100
+    this.svg
+      .selectAll("boxes")
+      .data(sumstat)
+      .enter()
+      .append("rect")
+      .attr("x", function (d: any) { return (Number(x(d.key)) - boxWidth / 2) })
+      .attr("y", function (d: any) { return (y(d.value.q3)) })
+      .attr("height", function (d: any) { return (y(d.value.q1) - y(d.value.q3)) })
+      .attr("width", boxWidth)
+      .attr("stroke", "black")
+      .style("fill", "#69b3a2")
+
+    // Show the median
+    this.svg
+      .selectAll("medianLines")
+      .data(sumstat)
+      .enter()
+      .append("line")
+      .attr("x1", function (d: any) { return (Number(x(d.key)) - boxWidth / 2) })
+      .attr("x2", function (d: any) { return (Number(x(d.key)) + boxWidth / 2) })
+      .attr("y1", function (d: any) { return (y(d.value.median)) })
+      .attr("y2", function (d: any) { return (y(d.value.median)) })
+      .attr("stroke", "black")
+      .style("width", 80);
+    this.svg
+      .selectAll("medianLines")
+      .data(sumstat)
+      .enter()
+      .append("line")
+      .attr("x1", function (d: any) { return (Number(x(d.key)) - boxWidth / 2) })
+      .attr("x2", function (d: any) { return (Number(x(d.key)) + boxWidth / 2) })
+      .attr("y1", function (d: any) { return (y(d.value.min)) })
+      .attr("y2", function (d: any) { return (y(d.value.min)) })
+      .attr("stroke", "black")
+      .style("width", 80);
+    this.svg
+      .selectAll("medianLines")
+      .data(sumstat)
+      .enter()
+      .append("line")
+      .attr("x1", function (d: any) { return (Number(x(d.key)) - boxWidth / 2) })
+      .attr("x2", function (d: any) { return (Number(x(d.key)) + boxWidth / 2) })
+      .attr("y1", function (d: any) { return (y(d.value.max)) })
+      .attr("y2", function (d: any) { return (y(d.value.max)) })
+      .attr("stroke", "black")
+      .style("width", 80);
+
+    // // Compute summary statistics used for the box:
+    // let data_sorted = data.sort(d3.ascending);
+    // let q1 = d3.quantile(data_sorted, 0.25) || 0;
+    // let median = d3.quantile(data_sorted, 0.5) || 0;
+    // let q3 = d3.quantile(data_sorted, 0.75) || 0;
+    // let interQuantileRange = q3 - q1;
+    // let min = q1 - 1.5 * interQuantileRange;
+    // let max = q1 + 1.5 * interQuantileRange;
+    // let center = 200;
+    // let width = 100;
+    // // Show the Y scale
+    // var y = d3.scaleLinear().domain([0, 24]).range([this.height, 0]);
+    // this.svg.call(d3.axisLeft(y));
+
+    // // Show the main vertical line
+    // this.svg
+    //   .append('line')
+    //   .attr('x1', center)
+    //   .attr('x2', center)
+    //   .attr('y1', y(min))
+    //   .attr('y2', y(max))
+    //   .attr('stroke', 'black');
+
+    // // Show the box
+    // this.svg
+    //   .append('rect')
+    //   .attr('x', center - width / 2)
+    //   .attr('y', y(q3))
+    //   .attr('height', y(q1) - y(q3))
+    //   .attr('width', width)
+    //   .attr('stroke', 'black')
+    //   .style('fill', '#69b3a2');
+
+    // // show median, min and max horizontal lines
+    // this.svg
+    //   .selectAll('toto')
+    //   .data([min, median, max])
+    //   .enter()
+    //   .append('line')
+    //   .attr('x1', center - width / 2)
+    //   .attr('x2', center + width / 2)
+    //   .attr('y1', (d: any) => {
+    //     return y(d);
+    //   })
+    //   .attr('y2', (d: any) => {
+    //     return y(d);
+    //   })
+    //   .attr('stroke', 'black');
 
     // 建立tooltips
     // const tooltips = d3
@@ -204,7 +306,7 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
     //   this.svg.selectAll('.label').style('font-size', '2vw');
     // }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   ngAfterViewInit(): void {
     this.rwdSvgWidth = document.querySelector('#' + this.chartName)
       ? document.querySelector('#' + this.chartName)!.clientWidth
