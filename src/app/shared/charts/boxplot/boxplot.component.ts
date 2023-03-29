@@ -120,6 +120,38 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
       .attr("width", boxWidth)
       .attr("stroke", "black")
       .style("fill", "#69b3a2")
+      .on('mouseover', (d: any) => {
+        tooltips.style('opacity', 1);
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style('left', d.layerX + 10 + 'px')
+          .style('top', d.layerY + 'px')
+          .html(
+            d.target.__data__.key +
+            '<br>' +
+            'median: ' +
+            d.target.__data__.value.median +
+            '<br>' +
+            'Q1: ' +
+            d.target.__data__.value.q1 +
+            '<br>' +
+            'Q3: ' +
+            d.target.__data__.value.q3
+          );
+      })
+      .on('mouseout', (d: any) => {
+        //設定滑鼠離開時tooltips隱藏
+        tooltips.style('opacity', 0);
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
+
+
 
     // Show the median
     this.svg
@@ -133,8 +165,9 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
       .attr("y2", function (d: any) { return (y(d.value.median)) })
       .attr("stroke", "black")
       .style("width", 80);
+
     this.svg
-      .selectAll("medianLines")
+      .selectAll("minLines")
       .data(sumstat)
       .enter()
       .append("line")
@@ -143,9 +176,33 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
       .attr("y1", function (d: any) { return (y(d.value.min)) })
       .attr("y2", function (d: any) { return (y(d.value.min)) })
       .attr("stroke", "black")
-      .style("width", 80);
+      .style("width", 80)
+      .on('mouseover', (d: any) => {
+        tooltips.style('opacity', 1);
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style('left', d.layerX + 10 + 'px')
+          .style('top', d.layerY + 'px')
+          .html(
+            d.target.__data__.key +
+            '<br>' +
+            'min: ' +
+            d.target.__data__.value.min
+          );
+      })
+      .on('mouseout', (d: any) => {
+        //設定滑鼠離開時tooltips隱藏
+        tooltips.style('opacity', 0);
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
     this.svg
-      .selectAll("medianLines")
+      .selectAll("maxLines")
       .data(sumstat)
       .enter()
       .append("line")
@@ -154,70 +211,53 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
       .attr("y1", function (d: any) { return (y(d.value.max)) })
       .attr("y2", function (d: any) { return (y(d.value.max)) })
       .attr("stroke", "black")
-      .style("width", 80);
+      .style("width", 80)
+      .on('mouseover', (d: any) => {
+        tooltips.style('opacity', 1);
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style('left', d.layerX + 10 + 'px')
+          .style('top', d.layerY + 'px')
+          .html(
+            d.target.__data__.key +
+            '<br>' +
+            'Max: ' +
+            d.target.__data__.value.max
+          );
+      })
+      .on('mouseout', (d: any) => {
+        //設定滑鼠離開時tooltips隱藏
+        tooltips.style('opacity', 0);
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
 
-    // // Compute summary statistics used for the box:
-    // let data_sorted = data.sort(d3.ascending);
-    // let q1 = d3.quantile(data_sorted, 0.25) || 0;
-    // let median = d3.quantile(data_sorted, 0.5) || 0;
-    // let q3 = d3.quantile(data_sorted, 0.75) || 0;
-    // let interQuantileRange = q3 - q1;
-    // let min = q1 - 1.5 * interQuantileRange;
-    // let max = q1 + 1.5 * interQuantileRange;
-    // let center = 200;
-    // let width = 100;
-    // // Show the Y scale
-    // var y = d3.scaleLinear().domain([0, 24]).range([this.height, 0]);
-    // this.svg.call(d3.axisLeft(y));
 
-    // // Show the main vertical line
-    // this.svg
-    //   .append('line')
-    //   .attr('x1', center)
-    //   .attr('x2', center)
-    //   .attr('y1', y(min))
-    //   .attr('y2', y(max))
-    //   .attr('stroke', 'black');
 
-    // // Show the box
-    // this.svg
-    //   .append('rect')
-    //   .attr('x', center - width / 2)
-    //   .attr('y', y(q3))
-    //   .attr('height', y(q1) - y(q3))
-    //   .attr('width', width)
-    //   .attr('stroke', 'black')
-    //   .style('fill', '#69b3a2');
 
-    // // show median, min and max horizontal lines
-    // this.svg
-    //   .selectAll('toto')
-    //   .data([min, median, max])
-    //   .enter()
-    //   .append('line')
-    //   .attr('x1', center - width / 2)
-    //   .attr('x2', center + width / 2)
-    //   .attr('y1', (d: any) => {
-    //     return y(d);
-    //   })
-    //   .attr('y2', (d: any) => {
-    //     return y(d);
-    //   })
-    //   .attr('stroke', 'black');
+
+
+
+
 
     // 建立tooltips
-    // const tooltips = d3
-    //   .select(`figure#${this.chartName}`)
-    //   .append('div')
-    //   .style('opacity', 0)
-    //   .style('position', 'absolute')
-    //   .attr('class', 'tooltip')
-    //   .style('background-color', 'white')
-    //   .style('color', 'black')
-    //   .style('border', 'solid')
-    //   .style('border-width', '2px')
-    //   .style('border-radius', '5px')
-    //   .style('padding', '5px');
+    const tooltips = d3
+      .select(`figure#${this.chartName}`)
+      .append('div')
+      .style('opacity', 0)
+      .style('position', 'absolute')
+      .attr('class', 'tooltip')
+      .style('background-color', 'white')
+      .style('color', 'black')
+      .style('border', 'solid')
+      .style('border-width', '2px')
+      .style('border-radius', '5px')
+      .style('padding', '5px');
 
     // Add dots
     // const dots = this.svg.append('g');
