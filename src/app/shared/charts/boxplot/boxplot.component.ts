@@ -87,8 +87,7 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
         }
       }
     )
-    sumstat
-    console.log('sumstat:', sumstat)
+
     // Add Y axis
     const y = d3.scaleLinear().domain([0, 50]).range([this.height, 0]);
     // Draw the Y-axis on the DOM
@@ -108,7 +107,7 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
       .style("width", 40)
 
     // rectangle for the main box
-    let boxWidth = 100
+    let boxWidth = Math.floor((this.width - this.margin * 2) / sumstat.length)
     this.svg
       .selectAll("boxes")
       .data(sumstat)
@@ -138,7 +137,13 @@ export class BoxPlotComponent implements OnInit, AfterViewInit {
             d.target.__data__.value.q1 +
             '<br>' +
             'Q3: ' +
-            d.target.__data__.value.q3
+            d.target.__data__.value.q3 +
+            '<br>' +
+            'min: ' +
+            d.target.__data__.value.min +
+            '<br>' +
+            'Max: ' +
+            d.target.__data__.value.max
           );
       })
       .on('mouseout', (d: any) => {
