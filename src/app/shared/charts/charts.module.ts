@@ -7,6 +7,7 @@ import { BarModule } from './bar/bar.module';
 import { MapModule } from './map/map.module';
 import { SankeyModule } from './sankey/sankey.module';
 import { BoxPlotModule } from './boxplot/boxplot.module';
+import { LineModule } from './line/line.module';
 
 @NgModule({
   declarations: [],
@@ -19,6 +20,7 @@ import { BoxPlotModule } from './boxplot/boxplot.module';
     MapModule,
     SankeyModule,
     BoxPlotModule,
+    LineModule,
   ],
   exports: [
     ScatterModule,
@@ -28,6 +30,7 @@ import { BoxPlotModule } from './boxplot/boxplot.module';
     MapModule,
     SankeyModule,
     BoxPlotModule,
+    LineModule,
   ],
 })
 export class ChartsModule {}
