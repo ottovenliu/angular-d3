@@ -104,9 +104,9 @@ export class LineComponent implements OnInit, AfterViewInit {
       .data(data)
       .enter()
       .append('circle')
-      .attr('cx', (d: any) => x(d.Released))
-      .attr('cy', (d: any) => y(d.Stars))
-      .attr('r', 7)
+      .attr('cx', (d: any) => x(d.date))
+      .attr('cy', (d: any) => y(d.value))
+      .attr('r', 5)
       .attr('class', 'point')
       .style('opacity', 0.5)
       .style('fill', '#69b3a2')
@@ -119,13 +119,14 @@ export class LineComponent implements OnInit, AfterViewInit {
           .style('left', d.layerX + 10 + 'px')
           .style('top', d.layerY + 'px')
           .html(
-            d.target.__data__.Framework +
+            // d.target.__data__.Framework +
+            //   '<br>' +
+            'Date: ' +
+              d.target.__data__.date.toISOString().split('T')[0] +
               '<br>' +
-              'Stars: ' +
-              d.target.__data__.Stars +
-              '<br>' +
-              'Released: ' +
-              d.target.__data__.Released
+              'Profit: ' +
+              d.target.__data__.value +
+              '$'
           );
       })
       .on('mouseout', (d: any) => {
@@ -142,47 +143,65 @@ export class LineComponent implements OnInit, AfterViewInit {
       dots.selectAll('.point').attr('r', 3);
     }
 
-    // Add labels
-    dots
-      .selectAll('text')
-      .data(data)
-      .enter()
-      .append('text')
-      .attr('class', 'label')
-      .text((d: any) => d.Framework)
-      .attr('x', (d: any) => x(d.Released))
-      .attr('y', (d: any) => y(d.Stars))
-      .on('mouseover', (d: any) => {
-        tooltips.style('opacity', 1);
-        tooltips.style('display', 'initial');
-      })
-      .on('mousemove', (d: any) => {
-        tooltips
-          .style('left', d.layerX + 10 + 'px')
-          .style('top', d.layerY + 'px')
-          .html(
-            d.target.__data__.Framework +
-              '<br>' +
-              'Stars: ' +
-              d.target.__data__.Stars +
-              '<br>' +
-              'Released: ' +
-              d.target.__data__.Released
-          );
-      })
-      .on('mouseout', (d: any) => {
-        //設定滑鼠離開時tooltips隱藏
-        tooltips.style('opacity', 0);
-        tooltips.style('display', 'none');
-      })
-      .on('click', (d: any) => {
-        // window.open(d.target.__data__.Url);
-        console.log('d.target.__data__:', d.target.__data__);
-        console.log('d:', d);
-      });
-    if (window.innerWidth < 520) {
-      this.svg.selectAll('.label').style('font-size', '2vw');
-    }
+    // Add dots labels
+    // dots
+    //   .selectAll('text')
+    //   .data(data)
+    //   .enter()
+    //   .append('text')
+    //   .attr('class', 'label')
+    //   .text((d: any) => d.Framework)
+    //   .attr('x', (d: any) => x(d.Released))
+    //   .attr('y', (d: any) => y(d.Stars))
+    //   .on('mouseover', (d: any) => {
+    //     tooltips.style('opacity', 1);
+    //     tooltips.style('display', 'initial');
+    //   })
+    //   .on('mousemove', (d: any) => {
+    //     tooltips
+    //       .style('left', d.layerX + 10 + 'px')
+    //       .style('top', d.layerY + 'px')
+    //       .html(
+    //         d.target.__data__.Framework +
+    //           '<br>' +
+    //           'Stars: ' +
+    //           d.target.__data__.Stars +
+    //           '<br>' +
+    //           'Released: ' +
+    //           d.target.__data__.Released
+    //       );
+    //   })
+    //   .on('mouseout', (d: any) => {
+    //     //設定滑鼠離開時tooltips隱藏
+    //     tooltips.style('opacity', 0);
+    //     tooltips.style('display', 'none');
+    //   })
+    //   .on('click', (d: any) => {
+    //     // window.open(d.target.__data__.Url);
+    //     console.log('d.target.__data__:', d.target.__data__);
+    //     console.log('d:', d);
+    //   });
+    // if (window.innerWidth < 520) {
+    //   this.svg.selectAll('.label').style('font-size', '2vw');
+    // }
+    // Add the line
+    this.svg
+      .append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#69b3a2')
+      .attr('stroke-width', 1.5)
+      .attr(
+        'd',
+        d3
+          .line()
+          .x((d: any) => {
+            return x(d.date);
+          })
+          .y((d: any) => {
+            return y(d.value);
+          })
+      );
   }
   ngOnInit(): void {}
   ngAfterViewInit(): void {
