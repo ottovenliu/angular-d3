@@ -97,7 +97,10 @@ export class HeaderComponent implements OnInit {
           [
             {
               label: 'Nets',
-              items: [{ label: 'Sankey', routerLink: 'Nets/Sankey' }],
+              items: [
+                { label: 'Sankey', routerLink: 'Nets/Sankey' },
+                { label: ' Force-Directed', routerLink: 'Nets/ForceDirected' },
+              ],
             },
           ],
         ],
