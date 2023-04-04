@@ -22,8 +22,6 @@ export class ForceDirectedComponent implements OnInit, AfterViewInit {
   private margin = 50;
   private width = 750 - this.margin * 2;
   private height = 400 - this.margin * 2;
-  private colors: any;
-  private sankey: any;
 
   @Input()
   chartName: string = 'bar';
@@ -79,165 +77,77 @@ export class ForceDirectedComponent implements OnInit, AfterViewInit {
       );
   }
   private drawCarts(data: any): void {
-    let formatNumber = d3.format(',.0f'), // zero decimal places
-      format = function (d: any) {
-        return formatNumber(d);
-      },
-      color = d3.scaleOrdinal(d3.schemeCategory10);
-    let dragmove = (d: any) => {
-      console.log('dragmove:', d);
-      console.log('dragmove:', d.sourceEvent.srcElement);
-      // var rectY = d3.select(this).select("rect").attr("y");
-      // var rectX = d3.select(this).select("rect").attr("X");
-      // d.y0 = d.y0 + d3.event.dy;
-      // d.x1 = d.x1 + d3.event.dx;
-      // d.x0 = d.x0 + d3.event.dx;
-      // var yTranslate = d.y0 - rectY;
-      // var xTranslate = d.x0 - rectX;
-      // d3.select(this).attr('transform', "translate(" + (xTranslate) + "," + (yTranslate) + ")");
-      // sankey.update(graph);
-      // link.attr('d', sankeyLinkHorizontal());
+    // Format Lines and Notes
+    const links = data.links.map((d: any) => Object.create(d));
+    const nodes = data.nodes.map((d: any) => Object.create(d));
+    const scale = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = (d: any) => scale(d.group);
+
+    let drag = (simulation: any) => {
+      function dragstarted(event: any) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        event.subject.fx = event.subject.x;
+        event.subject.fy = event.subject.y;
+      }
+
+      function dragged(event: any) {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+      }
+
+      function dragended(event: any) {
+        if (!event.active) simulation.alphaTarget(0);
+        event.subject.fx = null;
+        event.subject.fy = null;
+      }
+
+      return d3
+        .drag()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended);
     };
 
-    // Set the sankey diagram properties
-    let sankey = d3Sankey
-      .sankey()
-      .nodeWidth(36)
-      .nodePadding(180)
-      .size([this.width, this.height]);
-    // Constructs a new Sankey generator with the default settings.
-    let graph = sankey(data);
+    const simulation = d3
+      .forceSimulation(nodes)
+      .force(
+        'link',
+        d3.forceLink(links).id((d: any) => d.id)
+      )
+      .force('charge', d3.forceManyBody())
+      .force('center', d3.forceCenter(this.width / 2, this.height / 2));
 
-    // Add in the links
-    this.svg
+    const link = this.svg
       .append('g')
-      .selectAll('.link')
-      .data(graph.links)
-      .enter()
-      .append('path')
-      .attr('class', 'link')
-      .attr('d', d3Sankey.sankeyLinkHorizontal())
-      .style('stroke-width', function (d: any) {
-        return d.width;
-      })
-      .sort(function (a: any, b: any) {
-        return b.dy - a.dy;
-      });
+      .attr('stroke', '#999')
+      .attr('stroke-opacity', 0.6)
+      .selectAll('line')
+      .data(links)
+      .join('line')
+      .attr('stroke-width', (d: any) => Math.sqrt(d.value));
 
-    // Styling links And Hover Show Tooltips
-    this.svg
-      .selectAll('.link')
-      .attr('fill', 'none')
-      .attr('stroke', '#000')
-      .attr('stroke-opacity', 0.2)
-      .on('mouseover', (d: any) => {
-        d3.select(d.srcElement).attr('stroke-opacity', 0.6);
-        tooltips.style('opacity', 1);
-        tooltips.style('display', 'initial');
-      })
-      .on('mousemove', (d: any) => {
-        tooltips
-          .style('left', d.layerX + 10 + 'px')
-          .style('top', d.layerY + 'px')
-          .html(
-            '數值：' +
-              d.target.__data__.value +
-              '</br>' +
-              '路徑：' +
-              d.target.__data__.source.name +
-              '→' +
-              d.target.__data__.target.name
-          );
-      })
-      .on('mouseout', (d: any) => {
-        d3.select(d.srcElement).attr('stroke-opacity', 0.2);
-        tooltips.style('opacity', 0);
-        tooltips.style('display', 'none');
-      })
-      .on('click', (d: any) => {
-        console.log(d.target.__data__);
-      });
-
-    // add in the nodes
-    let node = this.svg
+    const node = this.svg
       .append('g')
-      .selectAll('.node')
-      .data(graph.nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'node');
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1.5)
+      .selectAll('circle')
+      .data(nodes)
+      .join('circle')
+      .attr('r', 5)
+      .attr('fill', color)
+      .call(drag(simulation) as unknown);
 
-    node
-      .append('rect')
-      .attr('x', function (d: any) {
-        return d.x0;
-      })
-      .attr('y', function (d: any) {
-        return d.y0;
-      })
-      .attr('height', function (d: any) {
-        return d.y1 - d.y0;
-      })
-      .attr('width', sankey.nodeWidth())
-      .style('fill', function (d: any) {
-        return (d.color = color(d.name.replace(/ .*/, '')));
-      })
-      .style('stroke', function (d: any) {
-        return d3.rgb(d.color).darker(2);
-      })
-      .on('mouseover', (d: any) => {
-        d3.select(d.srcElement).attr('stroke-opacity', 0.6);
-        tooltips.style('opacity', 1);
-        tooltips.style('display', 'initial');
-      })
-      .on('mousemove', (d: any) => {
-        tooltips
-          .style('left', d.layerX + 10 + 'px')
-          .style('top', d.layerY + 'px')
-          .html('數值：' + d.target.__data__.value);
-      })
-      .on('mouseout', (d: any) => {
-        d3.select(d.srcElement).attr('stroke-opacity', 0.2);
-        tooltips.style('opacity', 0);
-        tooltips.style('display', 'none');
-      })
-      .on('click', (d: any) => {
-        console.log(d.target.__data__);
-      });
+    node.append('title').text((d: any) => d.id);
 
-    // add in the title for the nodes
-    node
-      .append('text')
-      .attr('x', function (d: any) {
-        return d.x0 - 6;
-      })
-      .attr('y', function (d: any) {
-        return (d.y1 + d.y0) / 2;
-      })
-      .attr('dy', '0.35em')
-      .attr('text-anchor', 'end')
-      .attr('stroke-opacity', 1)
-      .text((d: any) => d.name)
-      .filter((d: any) => {
-        return d.x0 < this.width / 2;
-      })
-      .attr('x', function (d: any) {
-        return d.x1 + 50;
-      })
-      .on('click', (d: any) => {
-        console.log(d.target.__data__);
-      });
-    //事件綁定 d3.select(d.srcElement).attr('fill', 'red');
-    // this.svg.selectAll(".node")
-    //   .call(d3.drag()
-    //     .subject(d => d)
-    //     .on('start', (d: any) => { console.log(d); })
-    //     .on('drag', (d: any) => { dragmove(d); }))
-    // .on('click', (d: any) => {
-    //   // window.open(d.target.__data__.Url);
-    //   console.log('d.target.__data__:', d.target.__data__);
-    //   console.log('d:', d);
-    // });
+    simulation.on('tick', () => {
+      link
+        .attr('x1', (d: any) => d.source.x)
+        .attr('y1', (d: any) => d.source.y)
+        .attr('x2', (d: any) => d.target.x)
+        .attr('y2', (d: any) => d.target.y);
+
+      node.attr('cx', (d: any) => d.x).attr('cy', (d: any) => d.y);
+    });
 
     const tooltips = d3
       .select(`figure#${this.chartName}`)

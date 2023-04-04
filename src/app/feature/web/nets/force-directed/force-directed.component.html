@@ -3,7 +3,10 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-12 col-lg-6">
-        <app-sankey chartName="barChart" [data]="chartData_2D_1"></app-sankey>
+        <app-force-directed
+          chartName="barChart"
+          [data]="chartData_2D_1"
+        ></app-force-directed>
       </div>
       <div class="col-md-12 col-lg-6">
         <strong class="text-primary-800"
@@ -14,24 +17,13 @@
           <p-tag value="LazyLoad" styleClass="me-1"></p-tag>
         </strong>
         <p class="text-primary-800">
-          基礎型沖積圖模組，具有滑鼠滑動(MouseOver)時即時顯示路徑指向與數值的功能，具有點擊觸發事件顯示點擊資料，可透過Console進行事件的瀏覽。
+          基礎型力向圖模組，具有滑鼠滑動(MouseOver)時即時顯示路徑指向與數值的功能，具有拖拉事件。
         </p>
         <p class="text-primary-800">
           <strong> 開發時參考資源:</strong>
           <br />
-          <a
-            href="https://stackblitz.com/edit/angular-ivy-hw9dhn?file=src%2Fapp%2Fsankey%2Fsankey.component.ts"
-          ></a>
-          https://stackblitz.com/edit/angular-ivy-hw9dhn?file=src%2Fapp%2Fsankey%2Fsankey.component.ts
-          <br />
-          <a
-            href="https://gist.github.com/d3noob/102603765773940cae0e16128929c0a9"
-            >https://gist.github.com/d3noob/102603765773940cae0e16128929c0a9</a
-          >
-          <br />
-          <a href="https://d3-graph-gallery.com/graph/sankey_basic.html"
-            >https://d3-graph-gallery.com/graph/sankey_basic.html</a
-          >
+          <a href="https://jsfiddle.net/spiker830/07943tko/"></a>
+          https://jsfiddle.net/spiker830/07943tko/
         </p>
       </div>
     </div>
