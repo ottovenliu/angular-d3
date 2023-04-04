@@ -8,6 +8,7 @@ import { MapModule } from './map/map.module';
 import { SankeyModule } from './sankey/sankey.module';
 import { BoxPlotModule } from './boxplot/boxplot.module';
 import { LineModule } from './line/line.module';
+import { ForceDirectedModule } from './force-directed/force-directed.module';
 
 @NgModule({
   declarations: [],
@@ -21,6 +22,7 @@ import { LineModule } from './line/line.module';
     SankeyModule,
     BoxPlotModule,
     LineModule,
+    ForceDirectedModule,
   ],
   exports: [
     ScatterModule,
@@ -31,6 +33,7 @@ import { LineModule } from './line/line.module';
     SankeyModule,
     BoxPlotModule,
     LineModule,
+    ForceDirectedModule,
   ],
 })
 export class ChartsModule {}
