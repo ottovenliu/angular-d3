@@ -137,7 +137,27 @@ export class ForceDirectedComponent implements OnInit, AfterViewInit {
       .attr('fill', color)
       .call(drag(simulation) as unknown);
 
-    node.append('title').text((d: any) => d.id);
+    node
+      .on('mouseover', (d: any) => {
+        tooltips.style('opacity', 1);
+        tooltips.style('display', 'initial');
+      })
+      .on('mousemove', (d: any) => {
+        tooltips
+          .style('left', d.layerX + 10 + 'px')
+          .style('top', d.layerY + 'px')
+          .html(d.target.__data__.id);
+      })
+      .on('mouseout', (d: any) => {
+        //設定滑鼠離開時tooltips隱藏
+        tooltips.style('opacity', 0);
+        tooltips.style('display', 'none');
+      })
+      .on('click', (d: any) => {
+        console.log('d.target.__data__:', d.target.__data__);
+        console.log('d:', d);
+      });
+    // .append('title').text((d: any) => d.id);
 
     simulation.on('tick', () => {
       link
