@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy": "ng build --prod ---base-href=/angular-d3/ && angular-cli-ghpages --branch release --dir=dist/angular-d3 --no-silent",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
