@@ -33,7 +33,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 2023.03.08 - 圖表切分路徑切分&初始化結束  
 2023.03.10 - 地圖元件開發  
 2023.03.14 - fontAwesomeIcon@6 引用
-
+2023.03.16 - 沖積圖(Sankey)元件開發
+2023.03.29 - 盒狀圖(Box Plot)元件開發
+2023.04.01 - 折線圖元件開發  
+2023.04.04 - 力向圖(Force Directed)元件開發
 後續開發項目 -
 
 > 1.chart Animation  
