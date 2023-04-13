@@ -9,6 +9,7 @@ import { SankeyModule } from './sankey/sankey.module';
 import { BoxPlotModule } from './boxplot/boxplot.module';
 import { LineModule } from './line/line.module';
 import { ForceDirectedModule } from './force-directed/force-directed.module';
+import { TreeModule } from './tree/tree.module';
 
 @NgModule({
   declarations: [],
@@ -23,6 +24,7 @@ import { ForceDirectedModule } from './force-directed/force-directed.module';
     BoxPlotModule,
     LineModule,
     ForceDirectedModule,
+    TreeModule,
   ],
   exports: [
     ScatterModule,
@@ -34,6 +36,7 @@ import { ForceDirectedModule } from './force-directed/force-directed.module';
     BoxPlotModule,
     LineModule,
     ForceDirectedModule,
+    TreeModule,
   ],
 })
 export class ChartsModule {}
