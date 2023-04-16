@@ -99,9 +99,6 @@ export class TreeComponent implements OnInit, AfterViewInit {
   }
   // Toggle children on click.
   click(event: any, d: any, duration: number = 750) {
-    console.log(duration);
-    console.log(d);
-    console.log(event);
     if (d.children) {
       d._children = d.children;
       d.children = null;
